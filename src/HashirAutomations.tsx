@@ -816,7 +816,7 @@ function ContactSection({ sectionRef }) {
             </div>
             <h3 className="break-words font-display text-xl font-semibold text-white">Request sent</h3>
             <p className="font-body text-sm text-slate-400">
-              We received it — expect a reply within one business day.
+              We received it — expect a reply within 15 minutes.
             </p>
           </div>
         ) : (
@@ -924,7 +924,7 @@ function Footer() {
           Hashir Automations — automation &amp; AI systems.
         </span>
         <span className="flex min-w-0 items-center gap-1.5 break-words">
-          <Mail className="h-3.5 w-3.5 shrink-0" /> hello@hashirautomations.com
+          <Mail className="h-3.5 w-3.5 shrink-0" /> hashirgondal5006@gmail.com
         </span>
       </div>
     </footer>
