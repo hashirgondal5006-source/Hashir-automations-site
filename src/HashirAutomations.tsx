@@ -769,27 +769,42 @@ function ContactSection({ sectionRef }) {
     if (status === "loading") return;
     setStatus("loading");
 
-    const formData = new FormData();
-    formData.append("access_key", "e0976de8-2e2a-4d86-9380-de38db229d58");
-    formData.append("name", form.name);
-    formData.append("email", form.email);
-    formData.append("message", `Selected Services: ${selected.join(", ") || "None selected"}\n\nProject Context:\n${form.details}`);
+    // 1. Prepare data for Web3Forms (Email Notification Backups)
+    const web3Data = new FormData();
+    web3Data.append("access_key", "e0976de8-2e2a-4d86-9380-de38db229d58");
+    web3Data.append("name", form.name);
+    web3Data.append("email", form.email);
+    web3Data.append("message", `Selected Services: ${selected.join(", ") || "None selected"}\n\nProject Context:\n${form.details}`);
+
+    // 2. Prepare clean JSON data for Make.com (Free Automation Trigger)
+    const makeData = {
+      name: form.name,
+      email: form.email,
+      services: selected,
+      details: form.details,
+      submittedAt: new Date().toISOString()
+    };
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
+      // Send data to both platforms simultaneously
+      const [web3Response, makeResponse] = await Promise.all([
+        fetch("https://api.web3forms.com/submit", { method: "POST", body: web3Data }),
+        fetch("https://hook.eu1.make.com/g2udoeeu4mibqlex9mjseh9cesbyew4t", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(makeData)
+        })
+      ]);
 
-      if (response.ok) {
+      if (web3Response.ok || makeResponse.ok) {
         setStatus("sent");
       } else {
         setStatus("idle");
-        alert("Something went wrong with the submission. Please try again.");
+        alert("Something went wrong. Please try again.");
       }
     } catch (error) {
       setStatus("idle");
-      alert("Network error. Unable to send your request.");
+      alert("Error submitting form.");
     }
   };
 
