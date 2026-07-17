@@ -245,8 +245,11 @@ function PipelineVisual() {
         <span className="font-mono text-xs uppercase tracking-widest text-slate-400">
           Live Automation Pipeline
         </span>
-        <span className="flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 font-mono text-xs text-emerald-400">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" style={{ animation: "hashir-pulse-ring 1.8s ease-out infinite" }} />
+        <span className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 font-mono text-xs text-emerald-400">
+          <span
+            className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400"
+            style={{ animation: "hashir-pulse-ring 1.8s ease-out infinite" }}
+          />
           Running
         </span>
       </div>
@@ -266,7 +269,7 @@ function PipelineVisual() {
                   <Icon className="h-5 w-5" style={{ color: accent }} />
                 </div>
                 <div className="min-w-0">
-                  <p className="font-body text-sm font-semibold text-white">{node.label}</p>
+                  <p className="break-words font-body text-sm font-semibold text-white">{node.label}</p>
                   <p className="truncate font-mono text-xs text-slate-400">{node.detail}</p>
                 </div>
                 <ChevronRight className="ml-auto h-4 w-4 shrink-0 text-slate-600" />
@@ -304,13 +307,13 @@ function Hero({ sectionRef, refs }) {
       />
       <div className="relative flex-1 hashir-animate-in">
         <Eyebrow>Automation &amp; AI Systems</Eyebrow>
-        <h1 className="mt-5 font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+        <h1 className="mt-5 break-words font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
           We build AI &amp; automation systems that{" "}
           <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
             buy your time back.
           </span>
         </h1>
-        <p className="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
+        <p className="mt-5 max-w-xl break-words font-body text-base leading-relaxed text-slate-400">
           Stop wasting hours on repetitive manual work. We design, build, and troubleshoot
           high-performance Make.com &amp; Zapier integrations that run your business on autopilot.
         </p>
@@ -421,7 +424,7 @@ function ServicesSection({ sectionRef }) {
     <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>Services</Eyebrow>
-        <h2 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
           What we build and fix
         </h2>
         <p className="mt-3 font-body text-slate-400">
@@ -446,11 +449,11 @@ function ServicesSection({ sectionRef }) {
               >
                 <Icon className="h-6 w-6 text-violet-300" />
               </div>
-              <h3 className="font-display text-lg font-semibold text-white">{s.title}</h3>
-              <p className="mt-2 font-body text-sm text-slate-400">{s.desc}</p>
+              <h3 className="break-words font-display text-lg font-semibold text-white">{s.title}</h3>
+              <p className="mt-2 break-words font-body text-sm text-slate-400">{s.desc}</p>
 
               <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:max-h-24 group-hover:opacity-100">
-                <p className="border-t border-slate-800 pt-3 font-mono text-xs leading-relaxed text-blue-300">
+                <p className="break-words border-t border-slate-800 pt-3 font-mono text-xs leading-relaxed text-blue-300">
                   {s.detail}
                 </p>
               </div>
@@ -494,7 +497,7 @@ function PortfolioSection({ sectionRef }) {
     <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>Featured Blueprint</Eyebrow>
-        <h2 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
           Automated AI Outreach System
         </h2>
         <p className="mt-3 font-body text-slate-400">
@@ -503,7 +506,7 @@ function PortfolioSection({ sectionRef }) {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-5">
-        <div className="flex flex-col gap-3 lg:col-span-2">
+        <div className="flex min-w-0 w-full flex-col gap-3 lg:col-span-2">
           {steps.map((step, i) => {
             const StepIcon = step.icon;
             const isActive = i === active;
@@ -511,7 +514,7 @@ function PortfolioSection({ sectionRef }) {
               <button
                 key={step.title}
                 onClick={() => setActive(i)}
-                className={`flex items-start gap-4 rounded-xl border p-4 text-left transition-all duration-300 ${
+                className={`flex w-full items-start gap-4 rounded-xl border p-4 text-left transition-all duration-300 ${
                   isActive
                     ? "border-violet-500/60 bg-violet-500/10"
                     : "border-slate-800 bg-slate-900/30 hover:border-slate-700"
@@ -524,19 +527,23 @@ function PortfolioSection({ sectionRef }) {
                 >
                   {i + 1}
                 </div>
-                <div>
-                  <p className={`font-body text-sm font-semibold ${isActive ? "text-white" : "text-slate-300"}`}>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`break-words font-body text-sm font-semibold ${
+                      isActive ? "text-white" : "text-slate-300"
+                    }`}
+                  >
                     {step.title}
                   </p>
-                  <p className="mt-1 font-body text-xs text-slate-500">{step.copy}</p>
+                  <p className="mt-1 break-words font-body text-xs text-slate-500">{step.copy}</p>
                 </div>
               </button>
             );
           })}
         </div>
 
-        <div className="lg:col-span-3">
-          <GlassPanel className="flex h-full flex-col justify-between p-8">
+        <div className="w-full min-w-0 lg:col-span-3">
+          <GlassPanel className="flex h-full w-full flex-col justify-between p-6 sm:p-8">
             <div>
               <div
                 className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-400/30 bg-blue-500/10"
@@ -544,14 +551,20 @@ function PortfolioSection({ sectionRef }) {
               >
                 <Icon className="h-7 w-7 text-blue-300" />
               </div>
-              <h3 className="font-display text-2xl font-semibold text-white">{steps[active].title}</h3>
-              <p className="mt-3 font-body text-sm leading-relaxed text-slate-400">{steps[active].copy}</p>
+              <h3 className="break-words font-display text-2xl font-semibold text-white">
+                {steps[active].title}
+              </h3>
+              <p className="mt-3 break-words font-body text-sm leading-relaxed text-slate-400">
+                {steps[active].copy}
+              </p>
             </div>
 
             <div className="mt-8 rounded-xl border border-slate-800 bg-slate-950/70 p-4">
               <p className="font-mono text-xs uppercase tracking-widest text-slate-500">Live data flow</p>
               <div className="mt-2 flex items-center justify-between gap-3">
-                <span className="font-mono text-xs text-violet-300">{steps[active].preview.label}</span>
+                <span className="min-w-0 truncate font-mono text-xs text-violet-300">
+                  {steps[active].preview.label}
+                </span>
                 <span
                   className="h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400"
                   style={{ animation: "hashir-pulse-ring 1.8s ease-out infinite" }}
@@ -590,7 +603,7 @@ function RoiCalculator({ sectionRef, refs }) {
     <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>ROI Calculator</Eyebrow>
-        <h2 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
           See what manual work is really costing you
         </h2>
         <p className="mt-3 font-body text-slate-400">
@@ -601,11 +614,11 @@ function RoiCalculator({ sectionRef, refs }) {
       <GlassPanel className="grid gap-10 p-8 md:grid-cols-2 md:p-10">
         <div className="flex flex-col gap-10">
           <div>
-            <div className="mb-3 flex items-center justify-between">
-              <label className="font-body text-sm font-medium text-slate-300">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
                 Hours wasted on manual tasks per week
               </label>
-              <span className="font-mono text-sm font-semibold text-violet-300">{hours} hrs</span>
+              <span className="shrink-0 font-mono text-sm font-semibold text-violet-300">{hours} hrs</span>
             </div>
             <input
               type="range"
@@ -624,11 +637,11 @@ function RoiCalculator({ sectionRef, refs }) {
           </div>
 
           <div>
-            <div className="mb-3 flex items-center justify-between">
-              <label className="font-body text-sm font-medium text-slate-300">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
                 Average hourly cost of staff / your time
               </label>
-              <span className="font-mono text-sm font-semibold text-blue-300">${rate}/hr</span>
+              <span className="shrink-0 font-mono text-sm font-semibold text-blue-300">${rate}/hr</span>
             </div>
             <input
               type="range"
@@ -649,8 +662,8 @@ function RoiCalculator({ sectionRef, refs }) {
 
         <div className="flex flex-col justify-center gap-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
           <div>
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
-              <Clock className="h-3.5 w-3.5" /> Hours saved per year
+            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
+              <Clock className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Hours saved per year</span>
             </div>
             <p
               className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-500"
@@ -659,8 +672,8 @@ function RoiCalculator({ sectionRef, refs }) {
             </p>
           </div>
           <div>
-            <div className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
-              <DollarSign className="h-3.5 w-3.5" /> Money saved per year
+            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
+              <DollarSign className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Money saved per year</span>
             </div>
             <p
               className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-violet-500"
@@ -673,7 +686,7 @@ function RoiCalculator({ sectionRef, refs }) {
       </GlassPanel>
 
       <div className="mt-8 flex flex-col items-center gap-4 text-center">
-        <p className="font-body text-lg text-slate-200">
+        <p className="break-words font-body text-lg text-slate-200">
           Ready to save{" "}
           <span className="font-display font-semibold text-violet-300">{money}</span> this year? Let's
           build it.
@@ -703,7 +716,7 @@ function AboutSection() {
       <div className="grid gap-12 md:grid-cols-2 md:items-center">
         <div>
           <Eyebrow>About Hashir Automations</Eyebrow>
-          <h2 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">
+          <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
             Engineering discipline. No-code speed.
           </h2>
           <p className="mt-4 font-body text-sm leading-relaxed text-slate-400">
@@ -722,8 +735,8 @@ function AboutSection() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-1">
           {stats.map((s) => (
             <GlassPanel key={s.label} className="p-6">
-              <p className="font-display text-3xl font-bold text-white">{s.value}</p>
-              <p className="mt-1 font-body text-xs text-slate-400">{s.label}</p>
+              <p className="break-words font-display text-3xl font-bold text-white">{s.value}</p>
+              <p className="mt-1 break-words font-body text-xs text-slate-400">{s.label}</p>
             </GlassPanel>
           ))}
         </div>
@@ -762,7 +775,7 @@ function ContactSection({ sectionRef }) {
     <section ref={sectionRef} className="mx-auto w-full max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-10 text-center">
         <Eyebrow>Contact</Eyebrow>
-        <h2 className="mt-4 font-display text-3xl font-bold text-white sm:text-4xl">
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
           Book a free automation audit
         </h2>
         <p className="mx-auto mt-3 max-w-lg font-body text-slate-400">
@@ -779,7 +792,7 @@ function ContactSection({ sectionRef }) {
             >
               <Check className="h-7 w-7 text-emerald-400" />
             </div>
-            <h3 className="font-display text-xl font-semibold text-white">Request sent</h3>
+            <h3 className="break-words font-display text-xl font-semibold text-white">Request sent</h3>
             <p className="font-body text-sm text-slate-400">
               We received it — expect a reply within one business day.
             </p>
@@ -798,14 +811,14 @@ function ContactSection({ sectionRef }) {
                       type="button"
                       key={opt}
                       onClick={() => toggleOption(opt)}
-                      className={`flex items-center gap-1.5 rounded-full border px-4 py-2 font-body text-xs font-medium transition-all duration-200 ${
+                      className={`flex max-w-full items-center gap-1.5 rounded-full border px-4 py-2 text-left font-body text-xs font-medium transition-all duration-200 ${
                         isSelected
                           ? "border-violet-400 bg-violet-500/20 text-violet-200"
                           : "border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-600"
                       }`}
                     >
-                      {isSelected && <Check className="h-3.5 w-3.5" />}
-                      {opt}
+                      {isSelected && <Check className="h-3.5 w-3.5 shrink-0" />}
+                      <span className="break-words">{opt}</span>
                     </button>
                   );
                 })}
@@ -879,12 +892,12 @@ function Footer() {
   return (
     <footer className="border-t border-slate-800/60 px-6 py-10">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center font-body text-xs text-slate-500 sm:flex-row sm:px-6 sm:text-left lg:px-8">
-        <span className="flex items-center gap-2">
-          <Cpu className="h-4 w-4 text-violet-400" />
+        <span className="flex min-w-0 items-center gap-2 break-words">
+          <Cpu className="h-4 w-4 shrink-0 text-violet-400" />
           Hashir Automations — automation &amp; AI systems.
         </span>
-        <span className="flex items-center gap-1.5">
-          <Mail className="h-3.5 w-3.5" /> hello@hashirautomations.com
+        <span className="flex min-w-0 items-center gap-1.5 break-words">
+          <Mail className="h-3.5 w-3.5 shrink-0" /> hello@hashirautomations.com
         </span>
       </div>
     </footer>
