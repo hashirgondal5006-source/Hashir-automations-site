@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/*  Design tokens (see comments) — Space Grotesk for display,          */
+/*  Design tokens — Space Grotesk for display,                        */
 /*  Inter for body, JetBrains Mono for data/labels & the ROI numbers.  */
 /* ------------------------------------------------------------------ */
 const FONT_IMPORT = `
@@ -764,11 +764,33 @@ function ContactSection({ sectionRef }) {
     setSelected((prev) => (prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (status === "loading") return;
     setStatus("loading");
-    setTimeout(() => setStatus("sent"), 1600);
+
+    const formData = new FormData();
+    formData.append("access_key", "e0976de8-2e2a-4d86-9380-de38db229d58");
+    formData.append("name", form.name);
+    formData.append("email", form.email);
+    formData.append("message", `Selected Services: ${selected.join(", ") || "None selected"}\n\nProject Context:\n${form.details}`);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        setStatus("sent");
+      } else {
+        setStatus("idle");
+        alert("Something went wrong with the submission. Please try again.");
+      }
+    } catch (error) {
+      setStatus("idle");
+      alert("Network error. Unable to send your request.");
+    }
   };
 
   return (
@@ -799,6 +821,8 @@ function ContactSection({ sectionRef }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <input type="hidden" name="access_key" value="e0976de8-2e2a-4d86-9380-de38db229d58" />
+            
             <div>
               <p className="mb-3 font-body text-sm font-medium text-slate-300">
                 What do you need help with?
@@ -831,6 +855,7 @@ function ContactSection({ sectionRef }) {
                 <input
                   required
                   type="text"
+                  name="name"
                   value={form.name}
                   onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                   className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2.5 font-body text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-violet-400"
@@ -842,6 +867,7 @@ function ContactSection({ sectionRef }) {
                 <input
                   required
                   type="email"
+                  name="email"
                   value={form.email}
                   onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                   className="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2.5 font-body text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-violet-400"
@@ -857,6 +883,7 @@ function ContactSection({ sectionRef }) {
               <textarea
                 required
                 rows={4}
+                name="message"
                 value={form.details}
                 onChange={(e) => setForm((f) => ({ ...f, details: e.target.value }))}
                 className="w-full resize-none rounded-lg border border-slate-700 bg-slate-950/60 px-4 py-2.5 font-body text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-violet-400"
