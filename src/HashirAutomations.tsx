@@ -786,17 +786,22 @@ function ContactSection({ sectionRef }) {
     };
 
     try {
-      // Send data to both platforms simultaneously
-      const [web3Response, makeResponse] = await Promise.all([
+      // Send data to Web3Forms and BOTH Make.com webhooks simultaneously
+      const [web3Response, makeOldResponse, makeNewResponse] = await Promise.all([
         fetch("https://api.web3forms.com/submit", { method: "POST", body: web3Data }),
         fetch("https://hook.eu1.make.com/g2udoeeu4mibqlex9mjseh9cesbyew4t", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(makeData)
+        }),
+        fetch("https://hook.eu1.make.com/vcl5cpqixelo41g936xiwkmbpface5rt", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(makeData)
         })
       ]);
 
-      if (web3Response.ok || makeResponse.ok) {
+      if (web3Response.ok || makeOldResponse.ok || makeNewResponse.ok) {
         setStatus("sent");
       } else {
         setStatus("idle");
