@@ -1116,7 +1116,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Direct Google AI Studio API with Fallback)   */
+/*  Floating AI Chatbot (Active Google Models with Fallback)          */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,7 +1155,7 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      // Helper function to query Gemini models
+      // Helper function to query active Gemini models
       const callGemini = async (modelName: string) => {
         return await fetch(
           `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
@@ -1179,13 +1179,13 @@ function Chatbot({ refs }: { refs: any }) {
         );
       };
 
-      // 1. First attempt: gemini-2.0-flash
-      let response = await callGemini("gemini-2.0-flash");
+      // 1. Primary attempt: gemini-3.5-flash
+      let response = await callGemini("gemini-3.5-flash");
 
-      // 2. Fallback attempt: If 2.0 returns 503 (Busy) or 429 (Over capacity), switch to gemini-1.5-flash
-      if (response.status === 503 || response.status === 429) {
-        console.warn(`Primary model returned ${response.status}. Retrying with gemini-1.5-flash fallback...`);
-        response = await callGemini("gemini-1.5-flash");
+      // 2. Fallback attempt: If 3.5 is overloaded (503/429/404), fall back to gemini-3.1-flash-lite
+      if (!response.ok) {
+        console.warn(`Primary model returned status ${response.status}. Trying gemini-3.1-flash-lite fallback...`);
+        response = await callGemini("gemini-3.1-flash-lite");
       }
 
       const data = await response.json();
