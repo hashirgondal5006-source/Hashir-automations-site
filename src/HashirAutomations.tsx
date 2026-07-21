@@ -1116,7 +1116,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Ultra-Fast < 2s Response with 3.5s Timeout)   */
+/*  Floating AI Chatbot (Concise & Ultra-Fast < 2s Responses)          */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,7 +1155,7 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      // Helper function with a strict 3.5-second timeout to guarantee speed
+      // Helper function with strict concise instructions & 100 max tokens limit
       const callGeminiWithTimeout = async (modelName: string, timeoutMs = 3500) => {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1171,9 +1171,12 @@ function Chatbot({ refs }: { refs: any }) {
                 system_instruction: {
                   parts: [
                     {
-                      text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
+                      text: "You are Hashir's Automation Assistant. Keep all responses ultra-concise, punchy, and under 2-3 sentences max (under 40 words). Focus on answering directly and encouraging them to book a free audit.",
                     },
                   ],
+                },
+                generationConfig: {
+                  maxOutputTokens: 100, // Hard limit token count to prevent long walls of text
                 },
                 contents: nextMessages.slice(-6).map((m) => ({
                   role: m.role,
@@ -1190,7 +1193,7 @@ function Chatbot({ refs }: { refs: any }) {
         }
       };
 
-      // 1. Ultra-fast primary model (gemini-3.1-flash-lite usually responds in ~800ms)
+      // 1. Ultra-fast primary model
       let response = await callGeminiWithTimeout("gemini-3.1-flash-lite", 3500);
 
       // 2. Fallback model if primary times out or fails
