@@ -1116,7 +1116,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Active Google Models with Fallback)          */
+/*  Floating AI Chatbot (Ultra-Fast < 2s Response with 3.5s Timeout)   */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,37 +1155,48 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      // Helper function to query active Gemini models
-      const callGemini = async (modelName: string) => {
-        return await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              system_instruction: {
-                parts: [
-                  {
-                    text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
-                  },
-                ],
-              },
-              contents: nextMessages.slice(-6).map((m) => ({
-                role: m.role,
-                parts: [{ text: m.text }],
-              })),
-            }),
-          }
-        );
+      // Helper function with a strict 3.5-second timeout to guarantee speed
+      const callGeminiWithTimeout = async (modelName: string, timeoutMs = 3500) => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+        try {
+          const res = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              signal: controller.signal,
+              body: JSON.stringify({
+                system_instruction: {
+                  parts: [
+                    {
+                      text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
+                    },
+                  ],
+                },
+                contents: nextMessages.slice(-6).map((m) => ({
+                  role: m.role,
+                  parts: [{ text: m.text }],
+                })),
+              }),
+            }
+          );
+          clearTimeout(timer);
+          return res;
+        } catch (err) {
+          clearTimeout(timer);
+          return { ok: false, status: 504 } as Response;
+        }
       };
 
-      // 1. Primary attempt: gemini-3.5-flash
-      let response = await callGemini("gemini-3.5-flash");
+      // 1. Ultra-fast primary model (gemini-3.1-flash-lite usually responds in ~800ms)
+      let response = await callGeminiWithTimeout("gemini-3.1-flash-lite", 3500);
 
-      // 2. Fallback attempt: If 3.5 is overloaded (503/429/404), fall back to gemini-3.1-flash-lite
+      // 2. Fallback model if primary times out or fails
       if (!response.ok) {
-        console.warn(`Primary model returned status ${response.status}. Trying gemini-3.1-flash-lite fallback...`);
-        response = await callGemini("gemini-3.1-flash-lite");
+        console.warn("Primary model timed out or failed. Retrying with gemini-3.5-flash...");
+        response = await callGeminiWithTimeout("gemini-3.5-flash", 5000);
       }
 
       const data = await response.json();
