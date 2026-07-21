@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Keep context capped to the last 6 messages to keep token usage low
+    // Keep context capped to the last 6 messages to prevent high token usage
     const rawHistory = Array.isArray(history) && history.length > 0
       ? history.slice(-6)
       : [{ role: "user", text: message }];
