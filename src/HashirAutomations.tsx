@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Zap,
   Bot,
@@ -25,11 +25,11 @@ import {
   MailCheck,
   MessageCircle,
   ShieldCheck,
+  User,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
-/*  Design tokens — Space Grotesk for display,                        */
-/*  Inter for body, JetBrains Mono for data/labels & the ROI numbers.  */
+/*  Design tokens & dynamic CSS                                       */
 /* ------------------------------------------------------------------ */
 const FONT_IMPORT = `
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap');
@@ -98,10 +98,10 @@ input[type="range"].hashir-slider::-moz-range-thumb {
 `;
 
 /* ------------------------------------------------------------------ */
-/*  Reusable bits                                                     */
+/*  Reusable Components                                               */
 /* ------------------------------------------------------------------ */
 
-function GlassPanel({ className = "", children, style }: any) {
+function GlassPanel({ className = "", children, style }: { className?: string; children: React.ReactNode; style?: React.CSSProperties }) {
   return (
     <div
       className={`rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-xl ${className}`}
@@ -136,7 +136,7 @@ function GlowButton({ children, variant = "primary", className = "", ...props }:
   );
 }
 
-function Eyebrow({ children }: any) {
+function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-violet-300">
       <Sparkles className="h-3 w-3" />
@@ -149,7 +149,7 @@ function Eyebrow({ children }: any) {
 /*  Section: Nav                                                      */
 /* ------------------------------------------------------------------ */
 
-function NavBar({ refs }: any) {
+function NavBar({ refs }: { refs: any }) {
   const [open, setOpen] = useState(false);
   const links = [
     { label: "Services", ref: refs.services },
@@ -227,13 +227,13 @@ function NavBar({ refs }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Hero + live pipeline visual                              */
+/*  Section: Hero + Pipeline Visual                                   */
 /* ------------------------------------------------------------------ */
 
 function PipelineVisual() {
   const nodes = [
     { label: "Lead Trigger", detail: "New form submission", icon: Webhook, color: "violet" },
-    { label: "AI Processor", detail: "Claude drafts a reply", icon: BrainCircuit, color: "blue" },
+    { label: "AI Processor", detail: "Gemini drafts a reply", icon: BrainCircuit, color: "blue" },
     { label: "CRM Update", detail: "Contact record synced", icon: FolderInput, color: "violet" },
     { label: "Gmail Auto-Reply", detail: "Email sent in <10s", icon: MailCheck, color: "blue" },
   ];
@@ -298,7 +298,7 @@ function PipelineVisual() {
   );
 }
 
-function Hero({ sectionRef, refs }: any) {
+function Hero({ sectionRef, refs }: { sectionRef: any; refs: any }) {
   return (
     <section
       ref={sectionRef}
@@ -342,14 +342,14 @@ function Hero({ sectionRef, refs }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Trust bar ticker                                         */
+/*  Section: Trust Bar Ticker                                         */
 /* ------------------------------------------------------------------ */
 
 function TrustBar() {
   const tools = [
     "Make.com",
     "Zapier",
-    "OpenAI",
+    "Google Gemini",
     "Google Sheets",
     "Gmail",
     "Slack",
@@ -395,7 +395,7 @@ function TrustBar() {
 /*  Section: Services                                                 */
 /* ------------------------------------------------------------------ */
 
-function ServicesSection({ sectionRef }: any) {
+function ServicesSection({ sectionRef }: { sectionRef: any }) {
   const services = [
     {
       title: "Workflow Automation",
@@ -405,7 +405,7 @@ function ServicesSection({ sectionRef }: any) {
     },
     {
       title: "AI & API Integrations",
-      desc: "Leveraging GPT and Claude APIs to auto-process data and draft dynamic content.",
+      desc: "Leveraging LLM APIs to auto-process data and draft dynamic content.",
       icon: Bot,
       detail: "Prompt-engineered pipelines that read, summarize, classify, and write in your brand voice.",
     },
@@ -469,10 +469,10 @@ function ServicesSection({ sectionRef }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Featured portfolio (interactive tabs)                     */
+/*  Section: Portfolio Blueprint                                      */
 /* ------------------------------------------------------------------ */
 
-function PortfolioSection({ sectionRef }: any) {
+function PortfolioSection({ sectionRef }: { sectionRef: any }) {
   const steps = [
     {
       title: "Lead Capture",
@@ -483,7 +483,7 @@ function PortfolioSection({ sectionRef }: any) {
     {
       title: "AI Synthesis",
       icon: BrainCircuit,
-      copy: "The Claude API reads the lead's context and drafts a highly custom outreach message.",
+      copy: "Gemini AI reads the lead's context and drafts a highly custom outreach message.",
       preview: { label: "ai.draft_message", value: "\"Hi Alex, saw you're scaling fulfillment...\"" },
     },
     {
@@ -582,173 +582,7 @@ function PortfolioSection({ sectionRef }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: ROI Calculator                                           */
-/* ------------------------------------------------------------------ */
-
-function RoiCalculator({ sectionRef, refs }: any) {
-  const [hours, setHours] = useState(10);
-  const [rate, setRate] = useState(40);
-
-  const hoursSaved = hours * 52;
-  const moneySaved = hours * rate * 52;
-
-  const money = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(moneySaved);
-
-  const hoursPct = ((hours - 1) / (40 - 1)) * 100;
-  const ratePct = ((rate - 15) / (150 - 15)) * 100;
-
-  return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <div className="mb-12 max-w-2xl">
-        <Eyebrow>ROI Calculator</Eyebrow>
-        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
-          See what manual work is really costing you
-        </h2>
-        <p className="mt-3 font-body text-slate-400">
-          Move the sliders to match your team, and watch the yearly cost update live.
-        </p>
-      </div>
-
-      <GlassPanel className="grid gap-10 p-8 md:grid-cols-2 md:p-10">
-        <div className="flex flex-col gap-10">
-          <div>
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
-                Hours wasted on manual tasks per week
-              </label>
-              <span className="shrink-0 font-mono text-sm font-semibold text-violet-300">{hours} hrs</span>
-            </div>
-            <input
-              type="range"
-              min={1}
-              max={40}
-              value={hours}
-              onChange={(e) => setHours(Number(e.target.value))}
-              className="hashir-slider w-full"
-              style={{ "--fill": `${hoursPct}%` } as React.CSSProperties}
-              aria-label="Hours wasted on manual tasks per week"
-            />
-            <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
-              <span>1</span>
-              <span>40</span>
-            </div>
-          </div>
-
-          <div>
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
-                Average hourly cost of staff / your time
-              </label>
-              <span className="shrink-0 font-mono text-sm font-semibold text-blue-300">${rate}/hr</span>
-            </div>
-            <input
-              type="range"
-              min={15}
-              max={150}
-              value={rate}
-              onChange={(e) => setRate(Number(e.target.value))}
-              className="hashir-slider w-full"
-              style={{ "--fill": `${ratePct}%` } as React.CSSProperties}
-              aria-label="Average hourly cost of staff or your time"
-            />
-            <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
-              <span>$15</span>
-              <span>$150</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col justify-center gap-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
-          <div>
-            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
-              <Clock className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Hours saved per year</span>
-            </div>
-            <p
-              className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-500"
-            >
-              {hoursSaved.toLocaleString()}
-            </p>
-          </div>
-          <div>
-            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
-              <DollarSign className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Money saved per year</span>
-            </div>
-            <p
-              className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-violet-500"
-              style={{ filter: "drop-shadow(0 0 18px rgba(139,92,246,0.35))" }}
-            >
-              {money}
-            </p>
-          </div>
-        </div>
-      </GlassPanel>
-
-      <div className="mt-8 flex flex-col items-center gap-4 text-center">
-        <p className="break-words font-body text-lg text-slate-200">
-          Ready to save{" "}
-          <span className="font-display font-semibold text-violet-300">{money}</span> this year? Let's
-          build it.
-        </p>
-        <GlowButton onClick={() => refs.contact.current?.scrollIntoView({ behavior: "smooth" })}>
-          Start My Automation
-          <ArrowRight className="h-4 w-4" />
-        </GlowButton>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Section: About                                                    */
-/* ------------------------------------------------------------------ */
-
-function AboutSection() {
-  const stats = [
-    { label: "Scenarios shipped", value: "120+" },
-    { label: "Avg. hours saved / client / week", value: "14" },
-    { label: "Platforms integrated", value: "20+" },
-  ];
-
-  return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <div className="grid gap-12 md:grid-cols-2 md:items-center">
-        <div>
-          <Eyebrow>About Hashir Automations</Eyebrow>
-          <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
-            Engineering discipline. No-code speed.
-          </h2>
-          <p className="mt-4 font-body text-sm leading-relaxed text-slate-400">
-            We blend a strong technical web development and computer science foundation with
-            rapid-deployment no-code tooling. That means automations that don't just work in the
-            demo — they hold up under real traffic, malformed data, and edge cases, because
-            they're built by people who understand what's happening under the hood of every
-            webhook and API call.
-          </p>
-          <p className="mt-4 font-body text-sm leading-relaxed text-slate-400">
-            When a scenario breaks at 2am, we're not guessing from a no-code interface. We're
-            reading the payload.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-1">
-          {stats.map((s) => (
-            <GlassPanel key={s.label} className="p-6">
-              <p className="break-words font-display text-3xl font-bold text-white">{s.value}</p>
-              <p className="mt-1 break-words font-body text-xs text-slate-400">{s.label}</p>
-            </GlassPanel>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Section: How we work / engineering process                        */
+/*  Section: Process                                                  */
 /* ------------------------------------------------------------------ */
 
 function ProcessSection() {
@@ -827,7 +661,7 @@ function ProcessSection() {
 /*  Section: Pricing                                                  */
 /* ------------------------------------------------------------------ */
 
-function PricingSection({ sectionRef, refs }: any) {
+function PricingSection({ sectionRef, refs }: { sectionRef: any; refs: any }) {
   const tiers = [
     {
       name: "Starter",
@@ -849,7 +683,7 @@ function PricingSection({ sectionRef, refs }: any) {
       tagline: "For teams running on several systems at once.",
       features: [
         "Multi-system integration",
-        "AI-assisted workflows (Claude / GPT)",
+        "AI-assisted workflows (Gemini / GPT)",
         "24/7 scenario monitoring",
         "Priority support, same-day response",
       ],
@@ -936,10 +770,174 @@ function PricingSection({ sectionRef, refs }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Contact / intake form                                    */
+/*  Section: ROI Calculator                                           */
 /* ------------------------------------------------------------------ */
 
-function ContactSection({ sectionRef }: any) {
+function RoiCalculator({ sectionRef, refs }: { sectionRef: any; refs: any }) {
+  const [hours, setHours] = useState(10);
+  const [rate, setRate] = useState(40);
+
+  const hoursSaved = hours * 52;
+  const moneySaved = hours * rate * 52;
+
+  const money = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  }).format(moneySaved);
+
+  const hoursPct = ((hours - 1) / (40 - 1)) * 100;
+  const ratePct = ((rate - 15) / (150 - 15)) * 100;
+
+  return (
+    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>ROI Calculator</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          See what manual work is really costing you
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Move the sliders to match your team, and watch the yearly cost update live.
+        </p>
+      </div>
+
+      <GlassPanel className="grid gap-10 p-8 md:grid-cols-2 md:p-10">
+        <div className="flex flex-col gap-10">
+          <div>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
+                Hours wasted on manual tasks per week
+              </label>
+              <span className="shrink-0 font-mono text-sm font-semibold text-violet-300">{hours} hrs</span>
+            </div>
+            <input
+              type="range"
+              min={1}
+              max={40}
+              value={hours}
+              onChange={(e) => setHours(Number(e.target.value))}
+              className="hashir-slider w-full"
+              style={{ "--fill": `${hoursPct}%` } as React.CSSProperties}
+              aria-label="Hours wasted on manual tasks per week"
+            />
+            <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
+              <span>1</span>
+              <span>40</span>
+            </div>
+          </div>
+
+          <div>
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <label className="min-w-0 flex-1 break-words font-body text-sm font-medium text-slate-300">
+                Average hourly cost of staff / your time
+              </label>
+              <span className="shrink-0 font-mono text-sm font-semibold text-blue-300">${rate}/hr</span>
+            </div>
+            <input
+              type="range"
+              min={15}
+              max={150}
+              value={rate}
+              onChange={(e) => setRate(Number(e.target.value))}
+              className="hashir-slider w-full"
+              style={{ "--fill": `${ratePct}%` } as React.CSSProperties}
+              aria-label="Average hourly cost of staff or your time"
+            />
+            <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
+              <span>$15</span>
+              <span>$150</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col justify-center gap-6 rounded-2xl border border-slate-800 bg-slate-950/60 p-6">
+          <div>
+            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
+              <Clock className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Hours saved per year</span>
+            </div>
+            <p className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-blue-500">
+              {hoursSaved.toLocaleString()}
+            </p>
+          </div>
+          <div>
+            <div className="flex min-w-0 items-center gap-2 font-mono text-xs uppercase tracking-widest text-slate-500">
+              <DollarSign className="h-3.5 w-3.5 shrink-0" /> <span className="break-words">Money saved per year</span>
+            </div>
+            <p
+              className="mt-1 font-display text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-violet-500"
+              style={{ filter: "drop-shadow(0 0 18px rgba(139,92,246,0.35))" }}
+            >
+              {money}
+            </p>
+          </div>
+        </div>
+      </GlassPanel>
+
+      <div className="mt-8 flex flex-col items-center gap-4 text-center">
+        <p className="break-words font-body text-lg text-slate-200">
+          Ready to save{" "}
+          <span className="font-display font-semibold text-violet-300">{money}</span> this year? Let's
+          build it.
+        </p>
+        <GlowButton onClick={() => refs.contact.current?.scrollIntoView({ behavior: "smooth" })}>
+          Start My Automation
+          <ArrowRight className="h-4 w-4" />
+        </GlowButton>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: About                                                    */
+/* ------------------------------------------------------------------ */
+
+function AboutSection() {
+  const stats = [
+    { label: "Scenarios shipped", value: "120+" },
+    { label: "Avg. hours saved / client / week", value: "14" },
+    { label: "Platforms integrated", value: "20+" },
+  ];
+
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="grid gap-12 md:grid-cols-2 md:items-center">
+        <div>
+          <Eyebrow>About Hashir Automations</Eyebrow>
+          <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+            Engineering discipline. No-code speed.
+          </h2>
+          <p className="mt-4 font-body text-sm leading-relaxed text-slate-400">
+            We blend a strong technical web development and computer science foundation with
+            rapid-deployment no-code tooling. That means automations that don't just work in the
+            demo — they hold up under real traffic, malformed data, and edge cases, because
+            they're built by people who understand what's happening under the hood of every
+            webhook and API call.
+          </p>
+          <p className="mt-4 font-body text-sm leading-relaxed text-slate-400">
+            When a scenario breaks at 2am, we're not guessing from a no-code interface. We're
+            reading the payload.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 md:grid-cols-1">
+          {stats.map((s) => (
+            <GlassPanel key={s.label} className="p-6">
+              <p className="break-words font-display text-3xl font-bold text-white">{s.value}</p>
+              <p className="mt-1 break-words font-body text-xs text-slate-400">{s.label}</p>
+            </GlassPanel>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Contact Form                                             */
+/* ------------------------------------------------------------------ */
+
+function ContactSection({ sectionRef }: { sectionRef: any }) {
   const options = [
     "Fix a Broken Make Scenario",
     "Build an AI Tool",
@@ -948,7 +946,7 @@ function ContactSection({ sectionRef }: any) {
   ];
   const [selected, setSelected] = useState<string[]>([]);
   const [form, setForm] = useState({ name: "", email: "", details: "" });
-  const [status, setStatus] = useState("idle"); // idle | loading | sent
+  const [status, setStatus] = useState("idle");
 
   const toggleOption = (opt: string) => {
     setSelected((prev) => (prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]));
@@ -959,14 +957,12 @@ function ContactSection({ sectionRef }: any) {
     if (status === "loading") return;
     setStatus("loading");
 
-    // 1. Prepare data for Web3Forms (Email Notification Backups)
     const web3Data = new FormData();
     web3Data.append("access_key", "e0976de8-2e2a-4d86-9380-de38db229d58");
     web3Data.append("name", form.name);
     web3Data.append("email", form.email);
     web3Data.append("message", `Selected Services: ${selected.join(", ") || "None selected"}\n\nProject Context:\n${form.details}`);
 
-    // 2. Prepare clean JSON data for Make.com (Free Automation Trigger)
     const makeData = {
       name: form.name,
       email: form.email,
@@ -976,7 +972,6 @@ function ContactSection({ sectionRef }: any) {
     };
 
     try {
-      // Send data to Web3Forms and BOTH Make.com webhooks simultaneously
       const [web3Response, makeOldResponse, makeNewResponse] = await Promise.all([
         fetch("https://api.web3forms.com/submit", { method: "POST", body: web3Data }),
         fetch("https://hook.eu1.make.com/g2udoeeu4mibqlex9mjseh9cesbyew4t", {
@@ -1121,14 +1116,17 @@ function ContactSection({ sectionRef }: any) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot                                               */
+/*  Floating AI Chatbot (Direct Google AI Studio API call)            */
 /* ------------------------------------------------------------------ */
 
-const CHAT_API_ENDPOINT = "/api/chat";
+interface Message {
+  role: "user" | "model";
+  text: string;
+}
 
-function Chatbot({ refs }: any) {
+function Chatbot({ refs }: { refs: any }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     {
       role: "model",
       text: "Hi, I'm Hashir's automation assistant. What's eating up your team's time right now?",
@@ -1142,33 +1140,57 @@ function Chatbot({ refs }: any) {
     const trimmed = input.trim();
     if (!trimmed || isLoading) return;
 
-    const nextMessages = [...messages, { role: "user", text: trimmed }];
+    const nextMessages: Message[] = [...messages, { role: "user", text: trimmed }];
     setMessages(nextMessages);
     setInput("");
     setIsLoading(true);
     setError("");
 
     try {
-      const response = await fetch(CHAT_API_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          message: trimmed,
-          history: nextMessages,
-        }),
-      });
+      const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+      if (!apiKey) {
+        setError("VITE_GEMINI_API_KEY is not configured in Vercel settings.");
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system_instruction: {
+              parts: [
+                {
+                  text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
+                },
+              ],
+            },
+            contents: nextMessages.slice(-6).map((m) => ({
+              role: m.role,
+              parts: [{ text: m.text }],
+            })),
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.error || "Assistant unavailable. Please try again.");
+        setError(data?.error?.message || "Assistant is temporarily unavailable.");
         return;
       }
 
-      const reply = data?.reply || "Sorry, I couldn't generate a response just now.";
+      const reply =
+        data?.candidates?.[0]?.content?.parts?.[0]?.text ||
+        "Sorry, I couldn't generate a response just now.";
+
       setMessages((prev) => [...prev, { role: "model", text: reply }]);
     } catch (err) {
-      setError("Network error reaching the assistant. Please try again.");
+      console.error("Chat Error:", err);
+      setError("Network error. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -1198,7 +1220,7 @@ function Chatbot({ refs }: any) {
                   Automation Assistant
                 </p>
                 <span className="flex items-center gap-1 font-mono text-[10px] text-emerald-400">
-                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   Online
                 </span>
               </div>
@@ -1309,7 +1331,7 @@ function Footer() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Root component                                                    */
+/*  Root Component Export                                             */
 /* ------------------------------------------------------------------ */
 
 export default function HashirAutomations() {
