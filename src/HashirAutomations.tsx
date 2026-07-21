@@ -1116,7 +1116,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Concise & Ultra-Fast < 2s Responses)          */
+/*  Floating AI Chatbot (Concise, Ultra-Fast & No Bracket Placeholders) */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,7 +1155,7 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      // Helper function with strict concise instructions & 100 max tokens limit
+      // Helper function with strict concise instructions & no placeholder links
       const callGeminiWithTimeout = async (modelName: string, timeoutMs = 3500) => {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1171,12 +1171,12 @@ function Chatbot({ refs }: { refs: any }) {
                 system_instruction: {
                   parts: [
                     {
-                      text: "You are Hashir's Automation Assistant. Keep all responses ultra-concise, punchy, and under 2-3 sentences max (under 40 words). Focus on answering directly and encouraging them to book a free audit.",
+                      text: "You are Hashir's Automation Assistant. Keep responses ultra-concise, punchy, and under 2-3 sentences max (under 40 words). Never use placeholders like [Link] or [Insert Link]. If recommending an audit, tell them to scroll down to the contact section or click the button below.",
                     },
                   ],
                 },
                 generationConfig: {
-                  maxOutputTokens: 100, // Hard limit token count to prevent long walls of text
+                  maxOutputTokens: 100,
                 },
                 contents: nextMessages.slice(-6).map((m) => ({
                   role: m.role,
