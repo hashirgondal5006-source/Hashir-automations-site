@@ -98,10 +98,10 @@ input[type="range"].hashir-slider::-moz-range-thumb {
 `;
 
 /* ------------------------------------------------------------------ */
-/*  Reusable bits                                                      */
+/*  Reusable bits                                                     */
 /* ------------------------------------------------------------------ */
 
-function GlassPanel({ className = "", children, style }) {
+function GlassPanel({ className = "", children, style }: any) {
   return (
     <div
       className={`rounded-2xl border border-slate-800 bg-slate-900/40 backdrop-blur-xl ${className}`}
@@ -112,7 +112,7 @@ function GlassPanel({ className = "", children, style }) {
   );
 }
 
-function GlowButton({ children, variant = "primary", className = "", ...props }) {
+function GlowButton({ children, variant = "primary", className = "", ...props }: any) {
   const base =
     "inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold font-body transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950";
   if (variant === "primary") {
@@ -136,7 +136,7 @@ function GlowButton({ children, variant = "primary", className = "", ...props })
   );
 }
 
-function Eyebrow({ children }) {
+function Eyebrow({ children }: any) {
   return (
     <div className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3 py-1 font-mono text-xs uppercase tracking-widest text-violet-300">
       <Sparkles className="h-3 w-3" />
@@ -146,10 +146,10 @@ function Eyebrow({ children }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Nav                                                       */
+/*  Section: Nav                                                      */
 /* ------------------------------------------------------------------ */
 
-function NavBar({ refs }) {
+function NavBar({ refs }: any) {
   const [open, setOpen] = useState(false);
   const links = [
     { label: "Services", ref: refs.services },
@@ -159,7 +159,7 @@ function NavBar({ refs }) {
     { label: "Contact", ref: refs.contact },
   ];
 
-  const scrollTo = (ref) => {
+  const scrollTo = (ref: any) => {
     setOpen(false);
     ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -227,7 +227,7 @@ function NavBar({ refs }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Hero + live pipeline visual                               */
+/*  Section: Hero + live pipeline visual                              */
 /* ------------------------------------------------------------------ */
 
 function PipelineVisual() {
@@ -298,7 +298,7 @@ function PipelineVisual() {
   );
 }
 
-function Hero({ sectionRef, refs }) {
+function Hero({ sectionRef, refs }: any) {
   return (
     <section
       ref={sectionRef}
@@ -342,7 +342,7 @@ function Hero({ sectionRef, refs }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Trust bar ticker                                          */
+/*  Section: Trust bar ticker                                         */
 /* ------------------------------------------------------------------ */
 
 function TrustBar() {
@@ -392,10 +392,10 @@ function TrustBar() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Services                                                  */
+/*  Section: Services                                                 */
 /* ------------------------------------------------------------------ */
 
-function ServicesSection({ sectionRef }) {
+function ServicesSection({ sectionRef }: any) {
   const services = [
     {
       title: "Workflow Automation",
@@ -472,7 +472,7 @@ function ServicesSection({ sectionRef }) {
 /*  Section: Featured portfolio (interactive tabs)                     */
 /* ------------------------------------------------------------------ */
 
-function PortfolioSection({ sectionRef }) {
+function PortfolioSection({ sectionRef }: any) {
   const steps = [
     {
       title: "Lead Capture",
@@ -511,7 +511,6 @@ function PortfolioSection({ sectionRef }) {
       <div className="grid gap-8 lg:grid-cols-5">
         <div className="flex min-w-0 w-full flex-col gap-3 lg:col-span-2">
           {steps.map((step, i) => {
-            const StepIcon = step.icon;
             const isActive = i === active;
             return (
               <button
@@ -583,10 +582,10 @@ function PortfolioSection({ sectionRef }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: ROI Calculator                                            */
+/*  Section: ROI Calculator                                           */
 /* ------------------------------------------------------------------ */
 
-function RoiCalculator({ sectionRef, refs }) {
+function RoiCalculator({ sectionRef, refs }: any) {
   const [hours, setHours] = useState(10);
   const [rate, setRate] = useState(40);
 
@@ -704,7 +703,7 @@ function RoiCalculator({ sectionRef, refs }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: About                                                     */
+/*  Section: About                                                    */
 /* ------------------------------------------------------------------ */
 
 function AboutSection() {
@@ -825,10 +824,10 @@ function ProcessSection() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Pricing                                                   */
+/*  Section: Pricing                                                  */
 /* ------------------------------------------------------------------ */
 
-function PricingSection({ sectionRef, refs }) {
+function PricingSection({ sectionRef, refs }: any) {
   const tiers = [
     {
       name: "Starter",
@@ -937,25 +936,25 @@ function PricingSection({ sectionRef, refs }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Section: Contact / intake form                                     */
+/*  Section: Contact / intake form                                    */
 /* ------------------------------------------------------------------ */
 
-function ContactSection({ sectionRef }) {
+function ContactSection({ sectionRef }: any) {
   const options = [
     "Fix a Broken Make Scenario",
     "Build an AI Tool",
     "Automate Lead Response",
     "Other",
   ];
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<string[]>([]);
   const [form, setForm] = useState({ name: "", email: "", details: "" });
   const [status, setStatus] = useState("idle"); // idle | loading | sent
 
-  const toggleOption = (opt) => {
+  const toggleOption = (opt: string) => {
     setSelected((prev) => (prev.includes(opt) ? prev.filter((o) => o !== opt) : [...prev, opt]));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === "loading") return;
     setStatus("loading");
@@ -1122,18 +1121,12 @@ function ContactSection({ sectionRef }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot                                                 */
+/*  Floating AI Chatbot                                               */
 /* ------------------------------------------------------------------ */
 
-// SECURITY NOTE: the Gemini API key must NEVER live in client-side code —
-// anything here ships to every visitor's browser and can be read straight
-// out of devtools/view-source. Chat requests are sent to our own backend
-// proxy (CHAT_API_ENDPOINT below), which holds GEMINI_API_KEY as a
-// server-only environment variable and forwards the request to Gemini on
-// our behalf. See api/chat.js (or api/chat.ts) for that server-side handler.
 const CHAT_API_ENDPOINT = "/api/chat";
 
-function Chatbot({ refs }) {
+function Chatbot({ refs }: any) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
@@ -1156,9 +1149,6 @@ function Chatbot({ refs }) {
     setError("");
 
     try {
-      // Chat requests go through our backend proxy, which holds the Gemini
-      // API key server-side and forwards the conversation to Gemini. The
-      // client never sees or sends any API key.
       const response = await fetch(CHAT_API_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1168,23 +1158,23 @@ function Chatbot({ refs }) {
         }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`Chat API error: ${response.status}`);
+        setError(data?.error || "Assistant unavailable. Please try again.");
+        return;
       }
 
-      const data = await response.json();
-      const reply =
-        data?.reply || "Sorry, I couldn't generate a response just now.";
-
+      const reply = data?.reply || "Sorry, I couldn't generate a response just now.";
       setMessages((prev) => [...prev, { role: "model", text: reply }]);
     } catch (err) {
-      setError("Something went wrong reaching the assistant. Please try again.");
+      setError("Network error reaching the assistant. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
@@ -1299,7 +1289,7 @@ function Chatbot({ refs }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Footer                                                              */
+/*  Footer                                                            */
 /* ------------------------------------------------------------------ */
 
 function Footer() {
@@ -1319,7 +1309,7 @@ function Footer() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Root component                                                     */
+/*  Root component                                                    */
 /* ------------------------------------------------------------------ */
 
 export default function HashirAutomations() {
