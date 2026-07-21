@@ -1116,7 +1116,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Direct Google AI Studio API call)            */
+/*  Floating AI Chatbot (Direct Google AI Studio API with Fallback)   */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,31 +1155,43 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            system_instruction: {
-              parts: [
-                {
-                  text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
-                },
-              ],
-            },
-            contents: nextMessages.slice(-6).map((m) => ({
-              role: m.role,
-              parts: [{ text: m.text }],
-            })),
-          }),
-        }
-      );
+      // Helper function to query Gemini models
+      const callGemini = async (modelName: string) => {
+        return await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              system_instruction: {
+                parts: [
+                  {
+                    text: "You are Hashir's Automation Assistant. You help visitors understand how automation can save them time and money. Be professional, technical, and encourage them to book a free audit.",
+                  },
+                ],
+              },
+              contents: nextMessages.slice(-6).map((m) => ({
+                role: m.role,
+                parts: [{ text: m.text }],
+              })),
+            }),
+          }
+        );
+      };
+
+      // 1. First attempt: gemini-2.0-flash
+      let response = await callGemini("gemini-2.0-flash");
+
+      // 2. Fallback attempt: If 2.0 returns 503 (Busy) or 429 (Over capacity), switch to gemini-1.5-flash
+      if (response.status === 503 || response.status === 429) {
+        console.warn(`Primary model returned ${response.status}. Retrying with gemini-1.5-flash fallback...`);
+        response = await callGemini("gemini-1.5-flash");
+      }
 
       const data = await response.json();
 
       if (!response.ok) {
-        setError(data?.error?.message || "Assistant is temporarily unavailable.");
+        setError(data?.error?.message || "Assistant is temporarily unavailable. Please try again.");
         return;
       }
 
