@@ -23,6 +23,8 @@ import {
   FolderInput,
   BrainCircuit,
   MailCheck,
+  MessageCircle,
+  ShieldCheck,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -152,6 +154,7 @@ function NavBar({ refs }) {
   const links = [
     { label: "Services", ref: refs.services },
     { label: "Portfolio", ref: refs.portfolio },
+    { label: "Pricing", ref: refs.pricing },
     { label: "ROI Calculator", ref: refs.roi },
     { label: "Contact", ref: refs.contact },
   ];
@@ -627,7 +630,7 @@ function RoiCalculator({ sectionRef, refs }) {
               value={hours}
               onChange={(e) => setHours(Number(e.target.value))}
               className="hashir-slider w-full"
-              style={{ "--fill": `${hoursPct}%` }}
+              style={{ "--fill": `${hoursPct}%` } as React.CSSProperties}
               aria-label="Hours wasted on manual tasks per week"
             />
             <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
@@ -650,7 +653,7 @@ function RoiCalculator({ sectionRef, refs }) {
               value={rate}
               onChange={(e) => setRate(Number(e.target.value))}
               className="hashir-slider w-full"
-              style={{ "--fill": `${ratePct}%` }}
+              style={{ "--fill": `${ratePct}%` } as React.CSSProperties}
               aria-label="Average hourly cost of staff or your time"
             />
             <div className="mt-1 flex justify-between font-mono text-xs text-slate-600">
@@ -740,6 +743,194 @@ function AboutSection() {
             </GlassPanel>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: How we work / engineering process                        */
+/* ------------------------------------------------------------------ */
+
+function ProcessSection() {
+  const steps = [
+    {
+      title: "Audit",
+      icon: Wrench,
+      copy: "We map every manual step, tool, and handoff currently eating your team's time, and flag where things silently break.",
+    },
+    {
+      title: "Architecture",
+      icon: Workflow,
+      copy: "We design the scenario before we build it — data flow, error handling, and fallback paths, documented up front.",
+    },
+    {
+      title: "Implementation",
+      icon: Cpu,
+      copy: "We build in Make.com, Zapier, or custom code, with staged testing against real (not sample) data before go-live.",
+    },
+    {
+      title: "Monitoring",
+      icon: Clock,
+      copy: "We watch scenario health post-launch and tune it as your volume and edge cases evolve, not just on day one.",
+    },
+  ];
+
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Our Engineering Process</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          A repeatable SOP, not a one-off hack
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Every build follows the same four stages so nothing gets skipped under deadline pressure.
+        </p>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {steps.map((step, i) => {
+          const Icon = step.icon;
+          const isLast = i === steps.length - 1;
+          return (
+            <div key={step.title} className="relative">
+              <GlassPanel className="h-full p-6">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-violet-500/30 bg-violet-500/10 font-mono text-xs font-bold text-violet-300"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </div>
+                  <Icon className="h-5 w-5 shrink-0 text-blue-300" />
+                </div>
+                <h3 className="mt-4 break-words font-display text-lg font-semibold text-white">
+                  {step.title}
+                </h3>
+                <p className="mt-2 break-words font-body text-sm leading-relaxed text-slate-400">
+                  {step.copy}
+                </p>
+              </GlassPanel>
+              {!isLast && (
+                <ChevronRight
+                  className="absolute -right-4 top-1/2 hidden h-5 w-5 -translate-y-1/2 text-slate-700 lg:block"
+                  aria-hidden="true"
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Pricing                                                   */
+/* ------------------------------------------------------------------ */
+
+function PricingSection({ sectionRef, refs }) {
+  const tiers = [
+    {
+      name: "Starter",
+      price: "$1,500",
+      period: "/mo",
+      tagline: "For one workflow, done right.",
+      features: [
+        "Single workflow automation",
+        "Make.com or Zapier build & docs",
+        "Basic email support",
+        "Monthly health check-in",
+      ],
+      featured: false,
+    },
+    {
+      name: "Growth",
+      price: "$3,500",
+      period: "/mo",
+      tagline: "For teams running on several systems at once.",
+      features: [
+        "Multi-system integration",
+        "AI-assisted workflows (Claude / GPT)",
+        "24/7 scenario monitoring",
+        "Priority support, same-day response",
+      ],
+      featured: true,
+    },
+    {
+      name: "Enterprise",
+      price: "Custom",
+      period: "",
+      tagline: "For orgs that need governance and guarantees.",
+      features: [
+        "Custom API development",
+        "Formal SLAs & uptime guarantees",
+        "Access governance & audit logging",
+        "Dedicated engineering contact",
+      ],
+      featured: false,
+    },
+  ];
+
+  return (
+    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Pricing</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          Plans that scale with your automation needs
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Every tier includes a free initial audit. No long-term lock-in — cancel with 30 days' notice.
+        </p>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        {tiers.map((tier) => (
+          <GlassPanel
+            key={tier.name}
+            className={`relative flex h-full flex-col p-8 ${
+              tier.featured ? "border-violet-500/60" : ""
+            }`}
+            style={
+              tier.featured
+                ? { boxShadow: "0 0 40px rgba(139,92,246,0.18)" }
+                : undefined
+            }
+          >
+            {tier.featured && (
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-violet-600 to-blue-500 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-widest text-white">
+                Most Popular
+              </span>
+            )}
+
+            <h3 className="break-words font-display text-xl font-semibold text-white">{tier.name}</h3>
+            <p className="mt-1 break-words font-body text-sm text-slate-400">{tier.tagline}</p>
+
+            <div className="mt-6 flex items-end gap-1">
+              <span className="break-words font-display text-4xl font-bold text-white">{tier.price}</span>
+              {tier.period && (
+                <span className="mb-1 font-body text-sm text-slate-500">{tier.period}</span>
+              )}
+            </div>
+
+            <ul className="mt-6 flex flex-1 flex-col gap-3">
+              {tier.features.map((f) => (
+                <li key={f} className="flex items-start gap-2 font-body text-sm text-slate-300">
+                  <Check className="mt-0.5 h-4 w-4 shrink-0 text-violet-400" />
+                  <span className="break-words">{f}</span>
+                </li>
+              ))}
+            </ul>
+
+            <GlowButton
+              variant={tier.featured ? "primary" : "secondary"}
+              className="mt-8 w-full"
+              onClick={() => refs.contact.current?.scrollIntoView({ behavior: "smooth" })}
+            >
+              {tier.price === "Custom" ? "Talk to Us" : "Get Started"}
+              <ArrowRight className="h-4 w-4" />
+            </GlowButton>
+          </GlassPanel>
+        ))}
       </div>
     </section>
   );
@@ -841,8 +1032,6 @@ function ContactSection({ sectionRef }) {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-            <input type="hidden" name="access_key" value="e0976de8-2e2a-4d86-9380-de38db229d58" />
-            
             <div>
               <p className="mb-3 font-body text-sm font-medium text-slate-300">
                 What do you need help with?
@@ -855,6 +1044,7 @@ function ContactSection({ sectionRef }) {
                       type="button"
                       key={opt}
                       onClick={() => toggleOption(opt)}
+                      aria-pressed={isSelected}
                       className={`flex max-w-full items-center gap-1.5 rounded-full border px-4 py-2 text-left font-body text-xs font-medium transition-all duration-200 ${
                         isSelected
                           ? "border-violet-400 bg-violet-500/20 text-violet-200"
@@ -932,6 +1122,183 @@ function ContactSection({ sectionRef }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Floating AI Chatbot                                                 */
+/* ------------------------------------------------------------------ */
+
+// SECURITY NOTE: the Gemini API key must NEVER live in client-side code —
+// anything here ships to every visitor's browser and can be read straight
+// out of devtools/view-source. Chat requests are sent to our own backend
+// proxy (CHAT_API_ENDPOINT below), which holds GEMINI_API_KEY as a
+// server-only environment variable and forwards the request to Gemini on
+// our behalf. See api/chat.js (or api/chat.ts) for that server-side handler.
+const CHAT_API_ENDPOINT = "/api/chat";
+
+function Chatbot({ refs }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [messages, setMessages] = useState([
+    {
+      role: "model",
+      text: "Hi, I'm Hashir's automation assistant. What's eating up your team's time right now?",
+    },
+  ]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSendMessage = async () => {
+    const trimmed = input.trim();
+    if (!trimmed || isLoading) return;
+
+    const nextMessages = [...messages, { role: "user", text: trimmed }];
+    setMessages(nextMessages);
+    setInput("");
+    setIsLoading(true);
+    setError("");
+
+    try {
+      // Chat requests go through our backend proxy, which holds the Gemini
+      // API key server-side and forwards the conversation to Gemini. The
+      // client never sees or sends any API key.
+      const response = await fetch(CHAT_API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: trimmed,
+          history: nextMessages,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Chat API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const reply =
+        data?.reply || "Sorry, I couldn't generate a response just now.";
+
+      setMessages((prev) => [...prev, { role: "model", text: reply }]);
+    } catch (err) {
+      setError("Something went wrong reaching the assistant. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  return (
+    <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3">
+      {isOpen && (
+        <GlassPanel className="flex h-[28rem] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden bg-slate-950/95 p-0 hashir-animate-in">
+          <div className="flex items-center justify-between border-b border-slate-800 px-4 py-3">
+            <div className="flex min-w-0 items-center gap-2">
+              <div
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-blue-500"
+                style={{ boxShadow: "0 0 14px rgba(139,92,246,0.55)" }}
+              >
+                <Bot className="h-4 w-4 text-white" />
+              </div>
+              <div className="min-w-0">
+                <p className="truncate font-display text-sm font-semibold text-white">
+                  Automation Assistant
+                </p>
+                <span className="flex items-center gap-1 font-mono text-[10px] text-emerald-400">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                  Online
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsOpen(false)}
+              className="shrink-0 rounded-lg p-1 text-slate-400 transition-colors hover:text-white"
+              aria-label="Close chat"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-4">
+            {messages.map((m, i) => (
+              <div
+                key={i}
+                className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+              >
+                <div
+                  className={`max-w-[85%] break-words rounded-2xl px-3.5 py-2 font-body text-sm leading-relaxed ${
+                    m.role === "user"
+                      ? "bg-gradient-to-r from-violet-600 to-blue-500 text-white"
+                      : "border border-slate-800 bg-slate-900/60 text-slate-200"
+                  }`}
+                >
+                  {m.text}
+                </div>
+              </div>
+            ))}
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="flex items-center gap-2 rounded-2xl border border-slate-800 bg-slate-900/60 px-3.5 py-2 text-slate-400">
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  <span className="font-mono text-xs">Thinking...</span>
+                </div>
+              </div>
+            )}
+            {error && <p className="font-body text-xs text-red-400">{error}</p>}
+          </div>
+
+          <div className="border-t border-slate-800 p-3">
+            <div className="mb-2 flex items-center gap-1.5 font-mono text-[10px] text-slate-600">
+              <ShieldCheck className="h-3 w-3" />
+              Prefers booking a free audit? Skip ahead below.
+            </div>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask about automating a workflow..."
+                className="w-full min-w-0 flex-1 rounded-full border border-slate-700 bg-slate-950/60 px-4 py-2 font-body text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-violet-400"
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={isLoading || !input.trim()}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-blue-500 text-white transition-opacity disabled:opacity-40"
+                aria-label="Send message"
+              >
+                <Send className="h-4 w-4" />
+              </button>
+            </div>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                refs?.contact?.current?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="mt-2 w-full text-center font-mono text-[10px] uppercase tracking-widest text-violet-300 hover:text-violet-200"
+            >
+              Book a Free Audit Instead →
+            </button>
+          </div>
+        </GlassPanel>
+      )}
+
+      <button
+        onClick={() => setIsOpen((o) => !o)}
+        className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-blue-500 text-white transition-transform hover:-translate-y-0.5"
+        style={{ boxShadow: "0 0 24px rgba(139,92,246,0.55)" }}
+        aria-label={isOpen ? "Close chat assistant" : "Open chat assistant"}
+      >
+        {isOpen ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
+      </button>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Footer                                                              */
 /* ------------------------------------------------------------------ */
 
@@ -957,11 +1324,12 @@ function Footer() {
 
 export default function HashirAutomations() {
   const refs = {
-    hero: useRef(null),
-    services: useRef(null),
-    portfolio: useRef(null),
-    roi: useRef(null),
-    contact: useRef(null),
+    hero: useRef<HTMLElement>(null),
+    services: useRef<HTMLElement>(null),
+    portfolio: useRef<HTMLElement>(null),
+    pricing: useRef<HTMLElement>(null),
+    roi: useRef<HTMLElement>(null),
+    contact: useRef<HTMLElement>(null),
   };
 
   return (
@@ -973,11 +1341,14 @@ export default function HashirAutomations() {
         <TrustBar />
         <ServicesSection sectionRef={refs.services} />
         <PortfolioSection sectionRef={refs.portfolio} />
+        <ProcessSection />
+        <PricingSection sectionRef={refs.pricing} refs={refs} />
         <RoiCalculator sectionRef={refs.roi} refs={refs} />
         <AboutSection />
         <ContactSection sectionRef={refs.contact} />
       </main>
       <Footer />
+      <Chatbot refs={refs} />
     </div>
   );
 }
