@@ -1,7 +1,7 @@
 // api/chat.js
 // Secure backend proxy for the Hashir Automations chatbot.
 
-const GEMINI_MODEL = "gemini-2.0-flash";
+const GEMINI_MODEL = "gemini-1.5-flash";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 const CHATBOT_SYSTEM_PROMPT =
@@ -43,8 +43,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Fall back to current message or limit context length to last 6 messages
-    // to keep token count low and prevent HTTP 429 quota exhaustion.
+    // Keep context capped to the last 6 messages to keep token usage low
     const rawHistory = Array.isArray(history) && history.length > 0
       ? history.slice(-6)
       : [{ role: "user", text: message }];
@@ -75,7 +74,6 @@ export default async function handler(req, res) {
       }),
     });
 
-    // Handle Rate Limits / Quotas directly without triggering a 502 server crash
     if (!geminiResponse.ok) {
       const errorText = await geminiResponse.text().catch(() => "");
       console.error(`Gemini API error ${geminiResponse.status}:`, errorText);
