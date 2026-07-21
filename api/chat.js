@@ -1,7 +1,7 @@
 // api/chat.js
 // Secure backend proxy for the Hashir Automations chatbot.
 
-const GEMINI_MODEL = "gemini-2.5-flash";
+const GEMINI_MODEL = "gemini-2.0-flash";
 const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 const CHATBOT_SYSTEM_PROMPT =
@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Keep context capped to the last 6 messages to prevent high token usage
+    // Keep history capped to the last 6 messages to keep payloads small
     const rawHistory = Array.isArray(history) && history.length > 0
       ? history.slice(-6)
       : [{ role: "user", text: message }];
@@ -85,8 +85,8 @@ export default async function handler(req, res) {
         return;
       }
 
-      res.status(502).json({
-        error: "The assistant is temporarily unavailable. Please try again.",
+      res.status(geminiResponse.status).json({
+        error: `Gemini API Error (${geminiResponse.status})`,
       });
       return;
     }
