@@ -2078,8 +2078,8 @@ function Chatbot({ refs }: { refs: any }) {
 
       // 2. Fallback Model
       if (!response.ok) {
-        console.warn("Primary model failed/timed out. Retrying with gemini-1.5-flash fallback...");
-        response = await callGeminiWithTimeout("gemini-1.5-flash", 5000);
+        console.warn("Primary model failed/timed out. Retrying with flash-lite fallback...");
+        response = await callGeminiWithTimeout("gemini-2.0-flash-lite", 5000);
       }
 
       const data = await response.json();
