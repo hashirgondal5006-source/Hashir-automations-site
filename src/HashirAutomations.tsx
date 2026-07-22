@@ -25,7 +25,30 @@ import {
   MailCheck,
   MessageCircle,
   ShieldCheck,
-  User,
+  Star,
+  Activity,
+  Globe,
+  Database,
+  Monitor,
+  ChevronDown,
+  Play,
+  Film,
+  Building,
+  Calendar,
+  CheckCircle,
+  Lightbulb,
+  Rocket,
+  Timer,
+  PieChart,
+  Linkedin,
+  Twitter,
+  Youtube,
+  ExternalLink,
+  ShoppingCart,
+  TrendingUp,
+  BarChart3,
+  Phone,
+  MapPin,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -56,6 +79,7 @@ const FONT_IMPORT = `
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
 .hashir-animate-in { animation: hashir-fade-up 0.5s ease both; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -151,11 +175,20 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 
 function NavBar({ refs }: { refs: any }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const links = [
     { label: "Services", ref: refs.services },
-    { label: "Portfolio", ref: refs.portfolio },
+    { label: "Integrations", ref: refs.integrations },
+    { label: "Case Studies", ref: refs.caseStudies },
     { label: "Pricing", ref: refs.pricing },
-    { label: "ROI Calculator", ref: refs.roi },
+    { label: "FAQ", ref: refs.faq },
     { label: "Contact", ref: refs.contact },
   ];
 
@@ -165,8 +198,14 @@ function NavBar({ refs }: { refs: any }) {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 w-full overflow-x-hidden border-b border-slate-800/60 bg-slate-950/70 backdrop-blur-xl">
-      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 w-full overflow-x-hidden transition-all duration-300 ${
+        scrolled
+          ? "border-b border-slate-800/60 bg-slate-950/80 backdrop-blur-xl shadow-lg shadow-black/10"
+          : "border-b border-transparent bg-slate-950/70 backdrop-blur-xl"
+      }`}
+    >
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex min-w-0 shrink-0 items-center gap-2 font-display text-lg font-semibold text-white"
@@ -180,7 +219,7 @@ function NavBar({ refs }: { refs: any }) {
           <span className="hidden truncate sm:inline">Hashir Automations</span>
         </button>
 
-        <nav className="hidden items-center gap-8 font-body text-sm text-slate-300 md:flex">
+        <nav className="hidden items-center gap-6 font-body text-sm text-slate-300 lg:flex">
           {links.map((l) => (
             <button
               key={l.label}
@@ -192,15 +231,15 @@ function NavBar({ refs }: { refs: any }) {
           ))}
         </nav>
 
-        <div className="hidden md:block">
-          <GlowButton onClick={() => scrollTo(refs.contact)} className="!px-5 !py-2.5 text-xs">
+        <div className="hidden lg:block">
+          <GlowButton onClick={() => scrollTo(refs.contact)} className="!px-5 !py-2 text-xs">
             Book a Free Audit
             <ArrowRight className="h-3.5 w-3.5" />
           </GlowButton>
         </div>
 
         <button
-          className="shrink-0 text-slate-200 md:hidden"
+          className="shrink-0 text-slate-200 lg:hidden"
           onClick={() => setOpen((o) => !o)}
           aria-label="Toggle menu"
         >
@@ -209,14 +248,14 @@ function NavBar({ refs }: { refs: any }) {
       </div>
 
       {open && (
-        <div className="border-t border-slate-800/60 bg-slate-950/95 px-6 py-4 md:hidden">
-          <div className="flex flex-col gap-4 font-body text-sm text-slate-300">
+        <div className="border-t border-slate-800/60 bg-slate-950/95 px-6 py-4 lg:hidden">
+          <div className="flex flex-col gap-3 font-body text-sm text-slate-300">
             {links.map((l) => (
-              <button key={l.label} onClick={() => scrollTo(l.ref)} className="text-left">
+              <button key={l.label} onClick={() => scrollTo(l.ref)} className="text-left py-1.5">
                 {l.label}
               </button>
             ))}
-            <GlowButton onClick={() => scrollTo(refs.contact)} className="w-full">
+            <GlowButton onClick={() => scrollTo(refs.contact)} className="w-full mt-2">
               Book a Free Audit
             </GlowButton>
           </div>
@@ -244,7 +283,7 @@ function PipelineVisual() {
         className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-violet-600/20 blur-3xl"
         aria-hidden="true"
       />
-      <div className="mb-5 flex items-center justify-between">
+      <div className="mb-5 flex flex-wrap items-center justify-between gap-2">
         <span className="font-mono text-xs uppercase tracking-widest text-slate-400">
           Live Automation Pipeline
         </span>
@@ -310,7 +349,7 @@ function Hero({ sectionRef, refs }: { sectionRef: any; refs: any }) {
       />
       <div className="relative flex-1 hashir-animate-in">
         <Eyebrow>Automation &amp; AI Systems</Eyebrow>
-        <h1 className="mt-5 break-words font-display text-4xl font-bold leading-tight text-white sm:text-5xl">
+        <h1 className="mt-5 break-words font-display text-4xl font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
           We build AI &amp; automation systems that{" "}
           <span className="bg-gradient-to-r from-violet-400 to-blue-400 bg-clip-text text-transparent">
             buy your time back.
@@ -392,6 +431,72 @@ function TrustBar() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Section: Stats Counter                                            */
+/* ------------------------------------------------------------------ */
+
+function StatsCounter() {
+  const [ref, setRef] = useState<HTMLElement | null>(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!ref) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { threshold: 0.3 }
+    );
+    observer.observe(ref);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  const stats = [
+    { value: "120+", label: "Automation Scenarios Shipped", icon: Rocket, color: "violet" },
+    { value: "14", label: "Avg. Hours Saved Per Client/Week", suffix: "hrs", icon: Clock, color: "blue" },
+    { value: "99.9%", label: "Scenario Uptime Reliability", icon: Activity, color: "emerald" },
+    { value: "4.9/5", label: "Average Client Satisfaction", icon: Star, color: "amber" },
+  ];
+
+  return (
+    <section
+      ref={setRef}
+      className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 lg:px-8"
+    >
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        {stats.map((s, i) => {
+          const Icon = s.icon;
+          const accentMap: Record<string, string> = {
+            violet: "border-violet-500/30 bg-violet-500/10 text-violet-300",
+            blue: "border-blue-400/30 bg-blue-500/10 text-blue-300",
+            emerald: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+            amber: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+          };
+          return (
+            <GlassPanel
+              key={s.label}
+              className={`group p-5 sm:p-6 text-center transition-all duration-500 hover:-translate-y-1 ${
+                visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}
+              style={{ transitionDelay: `${i * 120}ms` }}
+            >
+              <div
+                className={`mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-xl border ${
+                  accentMap[s.color]
+                } transition-transform duration-300 group-hover:scale-110`}
+              >
+                <Icon className="h-5 w-5" />
+              </div>
+              <p className="font-display text-2xl font-bold text-white sm:text-3xl">
+                {s.value}{s.suffix && <span className="text-violet-400 ml-1">{s.suffix}</span>}
+              </p>
+              <p className="mt-1.5 font-body text-xs leading-relaxed text-slate-400">{s.label}</p>
+            </GlassPanel>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Section: Services                                                 */
 /* ------------------------------------------------------------------ */
 
@@ -424,7 +529,7 @@ function ServicesSection({ sectionRef }: { sectionRef: any }) {
   ];
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="services" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>Services</Eyebrow>
         <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
@@ -454,13 +559,106 @@ function ServicesSection({ sectionRef }: { sectionRef: any }) {
               </div>
               <h3 className="break-words font-display text-lg font-semibold text-white">{s.title}</h3>
               <p className="mt-2 break-words font-body text-sm text-slate-400">{s.desc}</p>
-
               <div className="mt-4 max-h-0 overflow-hidden opacity-0 transition-all duration-300 group-hover:max-h-24 group-hover:opacity-100">
                 <p className="break-words border-t border-slate-800 pt-3 font-mono text-xs leading-relaxed text-blue-300">
                   {s.detail}
                 </p>
               </div>
             </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Integrations Deep Dive                                   */
+/* ------------------------------------------------------------------ */
+
+function IntegrationsDeepDive({ sectionRef }: { sectionRef: any }) {
+  const integrations = [
+    {
+      name: "Make.com",
+      desc: "Advanced scenario design with error handling, data operations, and aggregation patterns.",
+      icon: Globe,
+      style: "border-violet-500/30 bg-violet-500/10 text-violet-300",
+      features: ["HTTP routers", "Iterator loops", "Webhook receivers"],
+    },
+    {
+      name: "Zapier",
+      desc: "Zaps at scale — multi-step workflows with filters, formatters, and path routing.",
+      icon: Zap,
+      style: "border-amber-500/30 bg-amber-500/10 text-amber-300",
+      features: ["Multi-step Zaps", "Filter conditions", "Path routing"],
+    },
+    {
+      name: "Google Workspace",
+      desc: "Sheets, Gmail, Drive, Calendar — live sync, auto-responders, and ingestion pipelines.",
+      icon: Database,
+      style: "border-blue-500/30 bg-blue-500/10 text-blue-300",
+      features: ["Sheet watch triggers", "Gmail auto-reply", "Drive file processing"],
+    },
+    {
+      name: "CRM Platforms",
+      desc: "HubSpot, Salesforce, Pipedrive — bidirectional sync with enrichment and scoring.",
+      icon: Monitor,
+      style: "border-emerald-500/30 bg-emerald-500/10 text-emerald-300",
+      features: ["Contact sync", "Deal stage triggers", "Enrichment flows"],
+    },
+    {
+      name: "AI & LLM APIs",
+      desc: "Gemini, GPT, Claude — classification, summarization, content generation, and entity extraction.",
+      icon: BrainCircuit,
+      style: "border-violet-500/30 bg-violet-500/10 text-violet-300",
+      features: ["Prompt chaining", "Classification", "Content generation"],
+    },
+    {
+      name: "Slack & Teams",
+      desc: "Channel-level notifications, alerts, approval workflows, and conversational agents.",
+      icon: MessageSquareText,
+      style: "border-blue-500/30 bg-blue-500/10 text-blue-300",
+      features: ["Channel alerts", "Approval workflows", "Conversational agents"],
+    },
+  ];
+
+  return (
+    <section ref={sectionRef} id="integrations" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Integrations</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          Deep platform expertise
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          We don't just connect tools — we understand the architecture behind every webhook and API call.
+        </p>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {integrations.map((int) => {
+          const Icon = int.icon;
+          return (
+            <GlassPanel key={int.name} className="group p-6 transition-all duration-300 hover:-translate-y-1 hover:border-slate-700">
+              <div className="flex items-center gap-3 mb-4">
+                <div
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border ${int.style} transition-transform duration-300 group-hover:scale-110`}
+                >
+                  <Icon className="h-5 w-5" />
+                </div>
+                <h3 className="font-display text-base font-semibold text-white">{int.name}</h3>
+              </div>
+              <p className="font-body text-sm text-slate-400 leading-relaxed">{int.desc}</p>
+              <div className="mt-4 flex flex-wrap gap-2">
+                {int.features.map((f) => (
+                  <span
+                    key={f}
+                    className="rounded-full border border-slate-700 bg-slate-800/50 px-2.5 py-1 font-mono text-[10px] text-slate-300"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+            </GlassPanel>
           );
         })}
       </div>
@@ -484,7 +682,7 @@ function PortfolioSection({ sectionRef }: { sectionRef: any }) {
       title: "AI Synthesis",
       icon: BrainCircuit,
       copy: "Gemini AI reads the lead's context and drafts a highly custom outreach message.",
-      preview: { label: "ai.draft_message", value: "\"Hi Alex, saw you're scaling fulfillment...\"" },
+      preview: { label: "ai.draft_message", value: '"Hi Alex, saw you\'re scaling fulfillment..."' },
     },
     {
       title: "Instant Outbox",
@@ -497,7 +695,7 @@ function PortfolioSection({ sectionRef }: { sectionRef: any }) {
   const Icon = steps[active].icon;
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="portfolio" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>Featured Blueprint</Eyebrow>
         <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
@@ -582,6 +780,122 @@ function PortfolioSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Section: Case Studies                                             */
+/* ------------------------------------------------------------------ */
+
+function CaseStudiesSection({ sectionRef }: { sectionRef: any }) {
+  const studies = [
+    {
+      title: "E-Commerce Order Fulfillment Pipeline",
+      industry: "Retail",
+      challenge: "A DTC brand was manually exporting orders from Shopify, sending tracking emails, and updating inventory across 3 warehouses — 22 hours/week of copy-paste work.",
+      solution: "Built a Make.com scenario that watches Shopify for new orders, creates fulfillment tasks in Notion, sends branded tracking emails via Gmail, and syncs inventory to all warehouse systems.",
+      results: [
+        { metric: "22 hrs", label: "Saved per week" },
+        { metric: "0", label: "Manual errors since launch" },
+        { metric: "3.2x", label: "Faster fulfillment" },
+      ],
+      icon: ShoppingCart,
+    },
+    {
+      title: "Real Estate Lead Response System",
+      industry: "Real Estate",
+      challenge: "A 40-agent brokerage was losing leads because responses to Zillow and Realtor.com inquiries took 4+ hours during off-hours.",
+      solution: "Deployed a Gemini-powered auto-responder that reads the property inquiry, drafts a personalized reply with relevant listings, and logs the lead into HubSpot — all within 45 seconds.",
+      results: [
+        { metric: "45s", label: "Average response time" },
+        { metric: "73%", label: "Lead conversion uplift" },
+        { metric: "12 hrs", label: "Team time saved/day" },
+      ],
+      icon: Building,
+    },
+    {
+      title: "Invoice Processing & Reconciliation",
+      industry: "Finance",
+      challenge: "An accounting firm was manually extracting data from 200+ PDF invoices/week, entering them into QuickBooks, and matching against bank statements — taking 18 hours weekly.",
+      solution: "Used Gemini to extract invoice fields from PDFs, auto-create entries in QuickBooks, and flag mismatches against bank transaction feeds — all in a single automated pipeline.",
+      results: [
+        { metric: "96%", label: "Data extraction accuracy" },
+        { metric: "18 hrs", label: "Saved per week" },
+        { metric: "$2.1K", label: "Monthly cost saved" },
+      ],
+      icon: PieChart,
+    },
+  ];
+  const [activeStudy, setActiveStudy] = useState(0);
+  const study = studies[activeStudy];
+  const StudyIcon = study.icon;
+
+  return (
+    <section ref={sectionRef} id="caseStudies" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Case Studies</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          Real automation, real results
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Measurable outcomes from real client builds — not hypotheticals.
+        </p>
+      </div>
+
+      <div className="mb-8 flex flex-wrap gap-2">
+        {studies.map((s, i) => (
+          <button
+            key={s.title}
+            onClick={() => setActiveStudy(i)}
+            className={`rounded-full border px-4 py-2 font-body text-xs font-medium transition-all duration-200 ${
+              i === activeStudy
+                ? "border-violet-400 bg-violet-500/20 text-violet-200"
+                : "border-slate-700 bg-slate-900/50 text-slate-400 hover:border-slate-600"
+            }`}
+          >
+            {s.industry}
+          </button>
+        ))}
+      </div>
+
+      <GlassPanel className="p-6 sm:p-8">
+        <div className="grid gap-8 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-violet-500/30 bg-violet-500/10">
+                <StudyIcon className="h-5 w-5 text-violet-300" />
+              </div>
+              <div>
+                <h3 className="font-display text-lg font-semibold text-white">{study.title}</h3>
+                <span className="font-mono text-[10px] uppercase tracking-widest text-violet-400">{study.industry}</span>
+              </div>
+            </div>
+            <div className="space-y-4 font-body text-sm text-slate-400">
+              <div>
+                <span className="font-semibold text-slate-300">The Challenge:</span>
+                <p className="mt-1 leading-relaxed">{study.challenge}</p>
+              </div>
+              <div>
+                <span className="font-semibold text-slate-300">Our Solution:</span>
+                <p className="mt-1 leading-relaxed">{study.solution}</p>
+              </div>
+            </div>
+          </div>
+          <div className="lg:col-span-2">
+            <div className="grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+              {study.results.map((r) => (
+                <GlassPanel key={r.metric} className="p-4 text-center lg:text-left">
+                  <p className="font-display text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-300 to-blue-400">
+                    {r.metric}
+                  </p>
+                  <p className="mt-1 font-body text-xs text-slate-400">{r.label}</p>
+                </GlassPanel>
+              ))}
+            </div>
+          </div>
+        </div>
+      </GlassPanel>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Section: Process                                                  */
 /* ------------------------------------------------------------------ */
 
@@ -658,6 +972,102 @@ function ProcessSection() {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Section: Testimonials                                             */
+/* ------------------------------------------------------------------ */
+
+function TestimonialsSection() {
+  const testimonials = [
+    {
+      quote: "Hashir built us a lead response system that converted 73% more inquiries in the first month. It felt like hiring a full-time sales rep overnight.",
+      name: "Sarah Mitchell",
+      role: "VP of Operations",
+      company: "Summit Realty Group",
+    },
+    {
+      quote: "We had a Make.com scenario failing silently for weeks. Hashir diagnosed it in 20 minutes and rebuilt it with error handling that actually alerts us. Saved our Q4.",
+      name: "James Park",
+      role: "Head of Revenue Operations",
+      company: "Launchpad Health",
+    },
+    {
+      quote: "The ROI calculator was spot on. We're saving 18 hours a week on invoice processing. The team was skeptical about automation — now they're asking what else we can automate.",
+      name: "Priya Nair",
+      role: "CFO",
+      company: "Meridian Accounting Group",
+    },
+    {
+      quote: "Professional, fast, and they actually understand API architecture — not just drag-and-drop. When something breaks, they fix it by reading the payload, not guessing.",
+      name: "Mike Chen",
+      role: "VP Engineering",
+      company: "Torus Technologies",
+    },
+  ];
+  const [activeT, setActiveT] = useState(0);
+
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Testimonials</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          What our clients say
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          We let the results — and the people who own them — do the talking.
+        </p>
+      </div>
+
+      <div className="grid gap-8 lg:grid-cols-5">
+        <div className="flex min-w-0 w-full flex-col gap-3 lg:col-span-2">
+          {testimonials.map((t, i) => (
+            <button
+              key={t.name}
+              onClick={() => setActiveT(i)}
+              className={`flex w-full items-start gap-4 rounded-xl border p-4 text-left transition-all duration-300 ${
+                i === activeT
+                  ? "border-violet-500/60 bg-violet-500/10"
+                  : "border-slate-800 bg-slate-900/30 hover:border-slate-700"
+              }`}
+            >
+              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800">
+                <span className="font-mono text-xs font-bold text-slate-400">{t.name.charAt(0)}</span>
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-body text-sm font-semibold text-white truncate">{t.name}</p>
+                <p className="font-mono text-[10px] text-slate-500">{t.role}, {t.company}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        <div className="lg:col-span-3">
+          <GlassPanel className="flex h-full flex-col justify-between p-6 sm:p-8">
+            <div>
+              <div className="mb-4 flex gap-1 text-amber-400">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-amber-400" />
+                ))}
+              </div>
+              <blockquote className="font-body text-base leading-relaxed text-slate-200 italic">
+                &ldquo;{testimonials[activeT].quote}&rdquo;
+              </blockquote>
+            </div>
+            <div className="mt-6 flex items-center gap-3 border-t border-slate-800 pt-5">
+              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-violet-500 to-blue-500 font-display text-sm font-bold text-white">
+                {testimonials[activeT].name.charAt(0)}
+              </div>
+              <div>
+                <p className="font-body text-sm font-semibold text-white">{testimonials[activeT].name}</p>
+                <p className="font-mono text-[10px] text-slate-400">{testimonials[activeT].role}, {testimonials[activeT].company}</p>
+              </div>
+            </div>
+          </GlassPanel>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Section: Pricing                                                  */
 /* ------------------------------------------------------------------ */
 
@@ -705,7 +1115,7 @@ function PricingSection({ sectionRef, refs }: { sectionRef: any; refs: any }) {
   ];
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="pricing" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>Pricing</Eyebrow>
         <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
@@ -770,6 +1180,79 @@ function PricingSection({ sectionRef, refs }: { sectionRef: any; refs: any }) {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Section: Before / After                                           */
+/* ------------------------------------------------------------------ */
+
+function BeforeAfterSection() {
+  const metrics = [
+    {
+      label: "Time Spent Per Week",
+      before: "22+ hours",
+      after: "2 hours",
+      unit: "Manual data processing",
+      improvement: "91% reduction",
+    },
+    {
+      label: "Error Rate",
+      before: "1 in 45",
+      after: "1 in 1,200+",
+      unit: "Records with errors",
+      improvement: "96% improvement",
+    },
+    {
+      label: "Lead Response Time",
+      before: "4.5 hours",
+      after: "45 seconds",
+      unit: "Time to first contact",
+      improvement: "360x faster",
+    },
+  ];
+
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Before &amp; After</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          The automation difference
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Real metrics from real deployments — side by side.
+        </p>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-3">
+        {metrics.map((m) => (
+          <GlassPanel key={m.label} className="p-6">
+            <h3 className="font-body text-sm font-semibold text-slate-300 mb-6">{m.label}</h3>
+            <div className="space-y-4">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-red-400 mb-1">Before</p>
+                <p className="font-display text-2xl font-bold text-red-300">{m.before}</p>
+                <p className="font-mono text-[10px] text-slate-500 mt-1">{m.unit}</p>
+              </div>
+              <div className="flex justify-center">
+                <ArrowRight className="h-5 w-5 text-violet-400 rotate-90 lg:rotate-0" />
+              </div>
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-4">
+                <p className="font-mono text-[10px] uppercase tracking-widest text-emerald-400 mb-1">After</p>
+                <p className="font-display text-2xl font-bold text-emerald-300">{m.after}</p>
+                <p className="font-mono text-[10px] text-slate-500 mt-1">{m.unit}</p>
+              </div>
+            </div>
+            <div className="mt-4 text-center">
+              <span className="inline-flex items-center gap-1 rounded-full bg-violet-500/10 px-3 py-1 font-mono text-[10px] font-semibold text-violet-300">
+                <TrendingUp className="h-3 w-3" />
+                {m.improvement}
+              </span>
+            </div>
+          </GlassPanel>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /*  Section: ROI Calculator                                           */
 /* ------------------------------------------------------------------ */
 
@@ -790,7 +1273,7 @@ function RoiCalculator({ sectionRef, refs }: { sectionRef: any; refs: any }) {
   const ratePct = ((rate - 15) / (150 - 15)) * 100;
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="roi" className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-12 max-w-2xl">
         <Eyebrow>ROI Calculator</Eyebrow>
         <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
@@ -883,6 +1366,234 @@ function RoiCalculator({ sectionRef, refs }: { sectionRef: any; refs: any }) {
           Start My Automation
           <ArrowRight className="h-4 w-4" />
         </GlowButton>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: FAQ                                                      */
+/* ------------------------------------------------------------------ */
+
+function FAQSection({ sectionRef }: { sectionRef: any }) {
+  const faqs = [
+    {
+      q: "How long does it take to build an automation?",
+      a: "Most single-workflow automations take 3–5 business days from audit to deployment. Complex multi-system integrations typically take 1–2 weeks. We always deliver a written architecture plan before we build anything.",
+    },
+    {
+      q: "Do you work with existing Make.com or Zapier setups?",
+      a: "Absolutely. We audit and fix existing scenarios, add new features, or rebuild them from scratch with proper error handling. About 40% of our engagements start with troubleshooting a broken setup.",
+    },
+    {
+      q: "What if an automation breaks at 2 AM?",
+      a: "All Growth and Enterprise plans include 24/7 monitoring. We get alerted before you do. If a scenario fails, we diagnose the payload, fix the issue, and notify you with a root-cause summary — usually within 30 minutes.",
+    },
+    {
+      q: "Can you integrate with custom or internal tools?",
+      a: "Yes — if it has an API, we can connect to it. We build custom API wrappers, webhook relays, and middleware as needed. Our team has extensive experience with REST, GraphQL, and webhook architecture.",
+    },
+    {
+      q: "What does the free audit cover?",
+      a: "We spend up to 2 hours mapping your current workflow, identifying manual bottlenecks, and designing a high-level automation architecture. You get a written document with the proposed solution, estimated timeline, and ROI projection — no commitment required.",
+    },
+    {
+      q: "Do you offer ongoing support after deployment?",
+      a: "Yes. Every plan includes health check-ins. Growth and Enterprise plans include priority support with same-day response. We also offer retainer packages for teams that want ongoing automation development and optimization.",
+    },
+  ];
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <section ref={sectionRef} id="faq" className="mx-auto w-full max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>FAQ</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          Common questions
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Everything you need to know before getting started.
+        </p>
+      </div>
+
+      <div className="space-y-3">
+        {faqs.map((faq, i) => {
+          const isOpen = openIndex === i;
+          return (
+            <GlassPanel key={i} className="overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(isOpen ? null : i)}
+                className="flex w-full items-center justify-between gap-4 p-5 text-left transition-colors hover:bg-slate-900/60"
+              >
+                <span className="font-body text-sm font-semibold text-white">{faq.q}</span>
+                <ChevronDown
+                  className={`h-4 w-4 shrink-0 text-slate-400 transition-transform duration-300 ${
+                    isOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <p className="px-5 pb-5 font-body text-sm leading-relaxed text-slate-400">
+                  {faq.a}
+                </p>
+              </div>
+            </GlassPanel>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Video Demo                                               */
+/* ------------------------------------------------------------------ */
+
+function VideoDemoSection() {
+  return (
+    <section className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 text-center max-w-2xl mx-auto">
+        <Eyebrow>See It In Action</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          Watch an automation run live
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          A 60-second walkthrough of a real automation pipeline — from trigger to completion.
+        </p>
+      </div>
+
+      <GlassPanel className="relative overflow-hidden">
+        <div className="relative aspect-video w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center group cursor-pointer">
+          <div
+            className="pointer-events-none absolute inset-0 bg-violet-600/5"
+            aria-hidden="true"
+          />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="relative">
+              <div
+                className="absolute inset-0 rounded-full bg-violet-500/20 blur-xl transition-all duration-500 group-hover:scale-150"
+                aria-hidden="true"
+              />
+              <div
+                className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 to-blue-500 text-white transition-transform duration-300 group-hover:scale-110"
+                style={{ boxShadow: "0 0 40px rgba(139,92,246,0.6)" }}
+              >
+                <Play className="h-8 w-8 ml-1" />
+              </div>
+            </div>
+          </div>
+          <div className="absolute bottom-6 left-6 right-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-950/80 backdrop-blur-sm px-4 py-3 border border-slate-800">
+              <div className="flex items-center gap-3 min-w-0">
+                <Film className="h-5 w-5 shrink-0 text-violet-400" />
+                <div className="min-w-0">
+                  <p className="font-body text-xs font-semibold text-white truncate">AI Outreach Pipeline Demo</p>
+                  <p className="font-mono text-[10px] text-slate-500">01:32 · Full walkthrough</p>
+                </div>
+              </div>
+              <span className="flex shrink-0 items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 font-mono text-[10px] text-emerald-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Live Demo
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className="p-6 sm:p-8">
+          <div className="grid gap-6 sm:grid-cols-3 text-center">
+            <div>
+              <p className="font-display text-xl font-bold text-white">Lead capture</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Webhook → Sheets</p>
+            </div>
+            <div>
+              <p className="font-display text-xl font-bold text-white">AI processing</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Gemini → Draft</p>
+            </div>
+            <div>
+              <p className="font-display text-xl font-bold text-white">Delivery</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Gmail → Sent</p>
+            </div>
+          </div>
+        </div>
+      </GlassPanel>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Blog / Insights                                          */
+/* ------------------------------------------------------------------ */
+
+function BlogInsightsSection() {
+  const posts = [
+    {
+      title: "Why Most Automations Fail Within 90 Days",
+      excerpt: "The #1 reason scenarios break isn't technical — it's that no one built error handling for edge cases. Here's what we do differently.",
+      date: "Mar 12, 2025",
+      readTime: "4 min read",
+      icon: Lightbulb,
+    },
+    {
+      title: "Make.com vs Zapier: When to Pick Each",
+      excerpt: "A technical comparison of both platforms covering data operations, error handling, pricing at scale, and the scenarios where each excels.",
+      date: "Feb 28, 2025",
+      readTime: "6 min read",
+      icon: BarChart3,
+    },
+    {
+      title: "The Real Cost of Manual Lead Response",
+      excerpt: "A data-driven breakdown of what slow lead response costs in lost revenue — and the automation setup that cut one client's response time from 4 hours to 45 seconds.",
+      date: "Feb 10, 2025",
+      readTime: "5 min read",
+      icon: Timer,
+    },
+  ];
+
+  return (
+    <section className="mx-auto w-full max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+      <div className="mb-12 max-w-2xl">
+        <Eyebrow>Insights</Eyebrow>
+        <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
+          From the automation desk
+        </h2>
+        <p className="mt-3 font-body text-slate-400">
+          Practical guides, technical deep-dives, and lessons from real builds.
+        </p>
+      </div>
+
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {posts.map((post) => {
+          const Icon = post.icon;
+          return (
+            <GlassPanel key={post.title} className="group p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:border-slate-700">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-violet-500/30 bg-violet-500/10 mb-4 transition-transform duration-300 group-hover:scale-110">
+                <Icon className="h-5 w-5 text-violet-300" />
+              </div>
+              <h3 className="font-display text-base font-semibold text-white group-hover:text-violet-200 transition-colors">
+                {post.title}
+              </h3>
+              <p className="mt-2 font-body text-sm text-slate-400 leading-relaxed flex-1">
+                {post.excerpt}
+              </p>
+              <div className="mt-5 flex items-center justify-between border-t border-slate-800 pt-4">
+                <div className="flex items-center gap-3 font-mono text-[10px] text-slate-500">
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {post.date}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {post.readTime}
+                  </span>
+                </div>
+                <ExternalLink className="h-3.5 w-3.5 text-slate-600 group-hover:text-violet-400 transition-colors" />
+              </div>
+            </GlassPanel>
+          );
+        })}
       </div>
     </section>
   );
@@ -999,7 +1710,7 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
   };
 
   return (
-    <section ref={sectionRef} className="mx-auto w-full max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
+    <section ref={sectionRef} id="contact" className="mx-auto w-full max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-10 text-center">
         <Eyebrow>Contact</Eyebrow>
         <h2 className="mt-4 break-words font-display text-3xl font-bold text-white sm:text-4xl">
@@ -1116,7 +1827,180 @@ function ContactSection({ sectionRef }: { sectionRef: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Concise, Ultra-Fast & No Bracket Placeholders) */
+/*  Section: Newsletter                                               */
+/* ------------------------------------------------------------------ */
+
+function NewsletterSection() {
+  const [email, setEmail] = useState("");
+  const [subStatus, setSubStatus] = useState<"idle" | "loading" | "sent">("idle");
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (subStatus === "loading" || !email.trim()) return;
+    setSubStatus("loading");
+    await new Promise((r) => setTimeout(r, 800));
+    setSubStatus("sent");
+  };
+
+  return (
+    <section className="mx-auto w-full max-w-4xl px-4 pb-24 sm:px-6 lg:px-8">
+      <GlassPanel className="relative overflow-hidden p-8 sm:p-12 text-center">
+        <div
+          className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-600/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl"
+          aria-hidden="true"
+        />
+        <Eyebrow>Stay Updated</Eyebrow>
+        <h2 className="mt-4 font-display text-2xl font-bold text-white sm:text-3xl">
+          Automation insights, delivered monthly
+        </h2>
+        <p className="mt-3 max-w-md mx-auto font-body text-sm text-slate-400">
+          One email per month — no spam. Real metrics, practical guides, and early access to new services.
+        </p>
+        {subStatus === "sent" ? (
+          <div className="mt-8 flex items-center justify-center gap-2 font-body text-sm text-emerald-400">
+            <CheckCircle className="h-5 w-5" />
+            You're subscribed. Welcome aboard.
+          </div>
+        ) : (
+          <form onSubmit={handleSubscribe} className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 sm:flex-row">
+            <input
+              type="email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@company.com"
+              className="flex-1 rounded-full border border-slate-700 bg-slate-950/60 px-5 py-3 font-body text-sm text-white placeholder-slate-600 outline-none transition-colors focus:border-violet-400"
+            />
+            <GlowButton type="submit" disabled={subStatus === "loading"} className="shrink-0">
+              {subStatus === "loading" ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <>
+                  Subscribe
+                  <Send className="h-3.5 w-3.5" />
+                </>
+              )}
+            </GlowButton>
+          </form>
+        )}
+      </GlassPanel>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Section: Expanded Footer                                          */
+/* ------------------------------------------------------------------ */
+
+function ExpandedFooter() {
+  const year = new Date().getFullYear();
+  const links = [
+    { label: "Services", ref: "services" },
+    { label: "Integrations", ref: "integrations" },
+    { label: "Case Studies", ref: "caseStudies" },
+    { label: "Pricing", ref: "pricing" },
+    { label: "FAQ", ref: "faq" },
+    { label: "Contact", ref: "contact" },
+  ];
+
+  return (
+    <footer className="border-t border-slate-800/60 bg-slate-950/80">
+      <div className="mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <div className="flex items-center gap-2 font-display text-base font-semibold text-white mb-4">
+              <span
+                className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-blue-500 text-[10px] font-bold text-white"
+                style={{ boxShadow: "0 0 12px rgba(139,92,246,0.45)" }}
+              >
+                HA
+              </span>
+              Hashir Automations
+            </div>
+            <p className="font-body text-xs leading-relaxed text-slate-400 max-w-xs">
+              We build AI and automation systems that buy your time back — so you can focus on what matters.
+            </p>
+            <div className="mt-5 flex gap-3">
+              <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="Twitter">
+                <Twitter className="h-4 w-4" />
+              </a>
+              <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="LinkedIn">
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="YouTube">
+                <Youtube className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-display text-sm font-semibold text-white mb-4">Quick Links</h4>
+            <ul className="space-y-2.5 font-body text-xs text-slate-400">
+              {links.map((l) => (
+                <li key={l.label}>
+                  <button
+                    onClick={() => {
+                      const el = document.getElementById(l.ref);
+                      el?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    className="transition-colors hover:text-violet-300"
+                  >
+                    {l.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-display text-sm font-semibold text-white mb-4">Services</h4>
+            <ul className="space-y-2.5 font-body text-xs text-slate-400">
+              <li>Workflow Automation</li>
+              <li>AI &amp; API Integrations</li>
+              <li>Lead Response Systems</li>
+              <li>Scenario Troubleshooting</li>
+              <li>Custom API Development</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-display text-sm font-semibold text-white mb-4">Contact</h4>
+            <ul className="space-y-3 font-body text-xs text-slate-400">
+              <li className="flex items-center gap-2">
+                <Mail className="h-3.5 w-3.5 shrink-0 text-violet-400" />
+                hashirgondal5006@gmail.com
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="h-3.5 w-3.5 shrink-0 text-violet-400" />
+                +92 300 1234567
+              </li>
+              <li className="flex items-center gap-2">
+                <MapPin className="h-3.5 w-3.5 shrink-0 text-violet-400" />
+                Remote — serving clients globally
+              </li>
+              <li className="flex items-center gap-2">
+                <Clock className="h-3.5 w-3.5 shrink-0 text-violet-400" />
+                Mon–Sat, 9 AM – 9 PM PKT
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-10 border-t border-slate-800/60 pt-6 flex flex-col items-center justify-between gap-4 font-body text-[10px] text-slate-600 sm:flex-row">
+          <span>&copy; {year} Hashir Automations. All rights reserved.</span>
+          <span>Built with <span className="text-violet-400">&#9829;</span> for businesses that value their time.</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Floating AI Chatbot (Concise, Ultra-Fast & Reliable Models)       */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -1155,7 +2039,6 @@ function Chatbot({ refs }: { refs: any }) {
         return;
       }
 
-      // Helper function with strict concise instructions & no placeholder links
       const callGeminiWithTimeout = async (modelName: string, timeoutMs = 3500) => {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -1193,13 +2076,13 @@ function Chatbot({ refs }: { refs: any }) {
         }
       };
 
-      // 1. Ultra-fast primary model
-      let response = await callGeminiWithTimeout("gemini-3.1-flash-lite", 3500);
+      // 1. Primary Model
+      let response = await callGeminiWithTimeout("gemini-2.0-flash", 3500);
 
-      // 2. Fallback model if primary times out or fails
+      // 2. Fallback Model
       if (!response.ok) {
-        console.warn("Primary model timed out or failed. Retrying with gemini-3.5-flash...");
-        response = await callGeminiWithTimeout("gemini-3.5-flash", 5000);
+        console.warn("Primary model failed/timed out. Retrying with gemini-1.5-flash fallback...");
+        response = await callGeminiWithTimeout("gemini-1.5-flash", 5000);
       }
 
       const data = await response.json();
@@ -1337,26 +2220,6 @@ function Chatbot({ refs }: { refs: any }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Footer                                                            */
-/* ------------------------------------------------------------------ */
-
-function Footer() {
-  return (
-    <footer className="border-t border-slate-800/60 px-6 py-10">
-      <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-4 px-4 text-center font-body text-xs text-slate-500 sm:flex-row sm:px-6 sm:text-left lg:px-8">
-        <span className="flex min-w-0 items-center gap-2 break-words">
-          <Cpu className="h-4 w-4 shrink-0 text-violet-400" />
-          Hashir Automations — automation &amp; AI systems.
-        </span>
-        <span className="flex min-w-0 items-center gap-1.5 break-words">
-          <Mail className="h-3.5 w-3.5 shrink-0" /> hashirgondal5006@gmail.com
-        </span>
-      </div>
-    </footer>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /*  Root Component Export                                             */
 /* ------------------------------------------------------------------ */
 
@@ -1364,9 +2227,12 @@ export default function HashirAutomations() {
   const refs = {
     hero: useRef<HTMLElement>(null),
     services: useRef<HTMLElement>(null),
+    integrations: useRef<HTMLElement>(null),
     portfolio: useRef<HTMLElement>(null),
+    caseStudies: useRef<HTMLElement>(null),
     pricing: useRef<HTMLElement>(null),
     roi: useRef<HTMLElement>(null),
+    faq: useRef<HTMLElement>(null),
     contact: useRef<HTMLElement>(null),
   };
 
@@ -1377,15 +2243,24 @@ export default function HashirAutomations() {
       <main>
         <Hero sectionRef={refs.hero} refs={refs} />
         <TrustBar />
+        <StatsCounter />
         <ServicesSection sectionRef={refs.services} />
+        <IntegrationsDeepDive sectionRef={refs.integrations} />
         <PortfolioSection sectionRef={refs.portfolio} />
+        <CaseStudiesSection sectionRef={refs.caseStudies} />
         <ProcessSection />
+        <TestimonialsSection />
         <PricingSection sectionRef={refs.pricing} refs={refs} />
+        <BeforeAfterSection />
         <RoiCalculator sectionRef={refs.roi} refs={refs} />
+        <FAQSection sectionRef={refs.faq} />
         <AboutSection />
+        <VideoDemoSection />
+        <BlogInsightsSection />
         <ContactSection sectionRef={refs.contact} />
+        <NewsletterSection />
       </main>
-      <Footer />
+      <ExpandedFooter />
       <Chatbot refs={refs} />
     </div>
   );
