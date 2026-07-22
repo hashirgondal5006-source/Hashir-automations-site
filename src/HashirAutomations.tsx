@@ -40,9 +40,6 @@ import {
   Rocket,
   Timer,
   PieChart,
-  Linkedin,
-  Twitter,
-  Youtube,
   ExternalLink,
   ShoppingCart,
   TrendingUp,
@@ -1926,13 +1923,13 @@ function ExpandedFooter() {
             </p>
             <div className="mt-5 flex gap-3">
               <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="Twitter">
-                <Twitter className="h-4 w-4" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
               </a>
               <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="LinkedIn">
-                <Linkedin className="h-4 w-4" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
               </a>
               <a href="#" className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-700 bg-slate-900/50 text-slate-400 hover:text-violet-300 hover:border-violet-500/50 transition-all" aria-label="YouTube">
-                <Youtube className="h-4 w-4" />
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4"><path d="M2.5 7.1C2.5 7.1 2.3 5.4 3.1 4.6C4 3.6 5.1 3.6 5.6 3.5C8.1 3.3 12 3.3 12 3.3C12 3.3 15.9 3.3 18.4 3.5C18.9 3.6 20 3.6 20.9 4.6C21.7 5.4 21.5 7.1 21.5 7.1C21.5 7.1 21.7 8.9 21.7 10.7V13.3C21.7 15.1 21.5 16.9 21.5 16.9C21.5 16.9 21.7 18.6 20.9 19.4C20 20.4 18.7 20.3 18.1 20.5C15.9 20.7 12 20.7 12 20.7C12 20.7 8.1 20.7 5.6 20.5C5.1 20.4 4 20.4 3.1 19.4C2.3 18.6 2.5 16.9 2.5 16.9C2.5 16.9 2.3 15.1 2.3 13.3V10.7C2.3 8.9 2.5 7.1 2.5 7.1Z"></path><path d="M9.7 14.8L15.4 11.2L9.7 7.6V14.8Z"></path></svg>
               </a>
             </div>
           </div>
@@ -2237,7 +2234,7 @@ export default function HashirAutomations() {
   };
 
   return (
-    <div className="w-full min-h-screen overflow-x-hidden bg-slate-950 font-body text-slate-100">
+    <div className="w-full min-h-screen overflow-x-hidden bg-slate-950 font-body text-slate-100" data-refs>
       <style>{FONT_IMPORT}</style>
       <NavBar refs={refs} />
       <main>
