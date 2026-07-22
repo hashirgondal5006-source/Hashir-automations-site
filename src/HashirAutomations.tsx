@@ -1973,7 +1973,7 @@ function ExpandedFooter() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5 shrink-0 text-violet-400" />
-                +92 300 1234567
+                +92 349 5609991
               </li>
               <li className="flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5 shrink-0 text-violet-400" />
