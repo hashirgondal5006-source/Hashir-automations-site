@@ -1997,7 +1997,7 @@ function ExpandedFooter() {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Floating AI Chatbot (Concise, Ultra-Fast & Reliable Models)       */
+/*  Floating AI Chatbot                                               */
 /* ------------------------------------------------------------------ */
 
 interface Message {
@@ -2073,13 +2073,13 @@ function Chatbot({ refs }: { refs: any }) {
         }
       };
 
-      // 1. Primary Model
-      let response = await callGeminiWithTimeout("gemini-2.0-flash", 3500);
+      // 1. Primary Model (Active 2026 model)
+      let response = await callGeminiWithTimeout("gemini-3.5-flash", 3500);
 
-      // 2. Fallback Model
+      // 2. Fallback Model (Active 2026 model)
       if (!response.ok) {
-        console.warn("Primary model failed/timed out. Retrying with flash-lite fallback...");
-        response = await callGeminiWithTimeout("gemini-2.0-flash-lite", 5000);
+        console.warn("Primary model failed/timed out. Retrying with gemini-3.1-flash-lite fallback...");
+        response = await callGeminiWithTimeout("gemini-3.1-flash-lite", 5000);
       }
 
       const data = await response.json();
